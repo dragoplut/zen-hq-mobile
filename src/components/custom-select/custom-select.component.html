@@ -1,0 +1,38 @@
+<div class="custom-input-container custom-select-container" [ngClass]="itemClass">
+  <ion-item class="item-select">
+    <ion-label
+      #selectLabel
+      class="custom-input-label {{itemValue ? 'input-not-empty' : ''}} {{selectLabel.isActive ? 'input-active' : ''}}"
+    >
+      {{itemLabel}}
+    </ion-label>
+    <ion-select
+      *ngIf="itemOptions && itemOptions[0] && !itemOptions[0].id"
+      [disabled]="itemDisabled"
+      [(ngModel)]="itemValue"
+      (focus)="selectLabel.isActive=true"
+      (blur)="selectLabel.isActive=false"
+      (ionChange)="valueChange()"
+    >
+      <ion-option
+        *ngFor="let option of itemOptions"
+        value="{{option}}"
+      >{{option}}</ion-option>
+    </ion-select>
+    <ion-select
+      *ngIf="itemOptions && itemOptions[0] && itemOptions[0].id"
+      [disabled]="itemDisabled"
+      [(ngModel)]="itemValue"
+      (focus)="selectLabel.isActive=true"
+      (blur)="selectLabel.isActive=false"
+      (ionChange)="valueChange()"
+    >
+      <ion-option
+        *ngFor="let option of itemOptions"
+        value="{{option.id}}"
+      >{{option.name}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-icon class="custom-select-down-icon" name="arrow-down"></ion-icon>
+  <span *ngIf="!selectLabel.isActive && itemValue" class="custom-input-error">{{itemError}}</span>
+</div>

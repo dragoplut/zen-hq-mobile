@@ -1,0 +1,65 @@
+<ion-content>
+  <div class="auth row center-xs middle-xs">
+    <form
+      ngForm
+      name="authForm"
+      class="signin-form col-xs-6 shadow-2"
+      #authForm="ngForm"
+      (submit)="authenticate()"
+    >
+      <div class="title-container">
+        <img alt="ZEN HQ Mobile" src="{{logoTransparent}}" class="zenhq-logo-transparent">
+      </div>
+      <div class="clear-container">
+        <custom-input
+          [itemDisabled]="false"
+          [itemValue]="user.email"
+          [itemLabel]="'Email'"
+          [itemType]="'email'"
+          [itemError]="validateItem('email')"
+          (itemChange)="user.email = $event"
+        ></custom-input>
+        <custom-input
+          [itemDisabled]="false"
+          [itemValue]="user.password"
+          [itemLabel]="'Password'"
+          [itemType]="'password'"
+          [itemError]="validateItem('password')"
+          (itemChange)="user.password = $event"
+        ></custom-input>
+      </div>
+      <div class="actions col-xs-12">
+        <button
+          type="submit"
+          class="btn-round"
+          [disabled]="!authForm.form.valid || loading || !emailRegExp.test(user.email) || !user.password"
+        >
+          <ion-icon class="btn-ion-icon" name="arrow-forward"></ion-icon>
+        </button>
+        <!--<button-->
+          <!--type="button"-->
+          <!--class="btn-rounded btn-transparent"-->
+          <!--(click)="goToCreateAccount()"-->
+          <!--[disabled]="loading"-->
+        <!--&gt;-->
+          <!--CREATE NEW ACCOUNT-->
+        <!--</button>-->
+        <div class="auth-links-container">
+          <a
+            class="link"
+            (click)="loading ? false : goToReset()"
+            [ngClass]="loading ? 'disabled' : ''"
+          >
+            forgot password
+          </a>
+        </div>
+      </div>
+      <div class="warn-container">
+        <span *ngIf="errorMessage" class="warn-message">
+          {{errorMessage}}
+          <i title="Clear" class="fa fa-trash warn-clear-icon" size="lg" (click)="clearError()"></i>
+        </span>
+      </div>
+    </form>
+  </div>
+</ion-content>

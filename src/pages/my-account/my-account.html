@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar class="custom-header">
+    <ion-icon class="header-action-icon pull-left" name="arrow-back" (tap)="goBack()"></ion-icon>
+    <ion-title>My Account</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <div class="page-content">
+    <row-with-action
+      [itemValue]="'MyName'"
+      [itemLabel]="'Account Info'"
+      (itemAction)="navigateTo($event)"
+    ></row-with-action>
+    <row-with-info
+      [itemValue]="account.email"
+      [itemLabel]="'Email'"
+    ></row-with-info>
+    <row-with-action
+      [itemValue]="'MyPassword'"
+      [itemLabel]="'Change Password'"
+      (itemAction)="navigateTo($event)"
+    ></row-with-action>
+    <div class="actions col-xs-12 text-center">
+      <a
+        class="link-btn pull-center"
+        (click)="presentLogOutConfirm()"
+      >
+        Log out
+      </a>
+    </div>
+    <img alt="ZEN HQ Mobile" src="{{logoTransparent}}" class="dpw-logo-foot bottom-absolute">
+  </div>
+</ion-content>

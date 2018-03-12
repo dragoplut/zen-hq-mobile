@@ -1,0 +1,16 @@
+<ion-header class="home-menu">
+  <ion-navbar class="custom-header">
+    <ion-title class="header-title"><img alt="ZEN HQ Mobile" src="{{logoTransparent}}" class="dpw-logo-head"></ion-title>
+    <img alt="Profile" src="{{userProfileImg}}" class="header-action-icon-small pull-right" (click)="goToProfile()">
+  </ion-navbar>
+</ion-header>
+<ion-content class="home-menu-container" padding>
+  <ion-slides spaceBetween="-120" pager>
+    <ion-slide style="background-color: transparent">
+      <div (click)="goToPen()" class="menu-card"><img alt="ZEN HQ Mobile" src="{{penImg}}" class="img-card"></div>
+    </ion-slide>
+    <ion-slide style="background-color: transparent">
+      <div (click)="goToClinic()" class="menu-card"><img alt="ZEN HQ Mobile" src="{{clinicImg}}" class="img-card"></div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

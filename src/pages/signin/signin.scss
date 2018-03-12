@@ -1,0 +1,120 @@
+@import '../../theme/variables';
+
+signin .content .scroll-content {
+  //overflow: hidden;
+}
+.content .auth {
+  height: 100vh;
+  width: 100%;
+  .signin-form {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    top: calc(50% - 180px);
+    height: auto;
+    width: 100%;
+    min-height: 280px;
+    min-width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    input {
+      background-color: transparent;
+      box-sizing: border-box;
+      border: none;
+      border-bottom: 1px solid $col-primary-white;
+      color: $col-primary-white;
+      font-size: $text-body;
+      font-weight: 500;
+      display: block;
+      line-height: 36px;
+      margin: 0 auto 21px;
+      padding: 0;
+      outline: none;
+      height: 36px;
+      width: 100%;
+    }
+    input::-webkit-input-placeholder,
+    input:-ms-input-placeholder,
+    input::-moz-placeholder,
+    input:-moz-placeholder {
+      color: $col-neutral-placeholder;
+    }
+    input:focus {
+      border-bottom: 1px solid $col-primary-white;
+    }
+    .custom-input-container .custom-input-label {
+      font-weight: 600;
+    }
+    .custom-input-container .custom-input-label.input-active {
+      color: $col-primary-white;
+    }
+    .zenhq-logo-transparent {
+      margin: 0 auto 60px;
+      width: 70%;
+    }
+    .warn-clear-icon {
+      cursor: pointer;
+      display: none;
+      position: absolute;
+      top: 2px;
+      right: -18px;
+    }
+    .warn-message {
+      background-color: rgba($col-primary-black, .8);
+      border-radius: 10px;
+      font-size: $text-header;
+      font-weight: 600;
+      color: $col-primary-red;
+      line-height: 26px;
+      padding: 15px 20px;
+      position: relative;
+      //text-shadow: 1px 1px 1px #fff;
+    }
+    .warn-container {
+      display: block;
+      position: relative;
+      margin: 60px auto 10px;
+      text-align: center;
+      height: 26px;
+      width: 100%;
+      .fa-close {
+        color: $col-neutral-placeholder;
+        cursor: pointer;
+        font-size: 16px;
+        position: absolute;
+        right: -20px;
+        top: 0;
+        z-index: 2;
+      }
+    }
+    .warn-container:hover {
+      .warn-clear-icon {
+        display: inline-block;
+      }
+    }
+  }
+}
+.not-approved-container, .not-approved-container input, .not-approved-container button {
+  background-color: $col-primary-white;
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1000;
+}
+.not-approved-container input, .not-approved-container button {
+  padding-left: 10px;
+  left: calc(50% - 120px);
+  top: calc(50% - 16px);
+  height: 32px;
+  width: 200px;
+}
+.not-approved-container button {
+  left: calc(50% + 80px);
+  width: 50px;
+}

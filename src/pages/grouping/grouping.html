@@ -1,0 +1,77 @@
+<ion-header class="my-clinic-page">
+  <ion-navbar class="custom-header">
+    <ion-icon *ngIf="activeGroup && activeGroup.level" class="header-action-icon pull-left" name="arrow-back" (tap)="getPrevGroup(activeGroup)"></ion-icon>
+    <ion-searchbar
+      placeholder="Search"
+      [ngClass]="activeGroup && activeGroup.level ? 'ion-searchbar-small' : ''"
+      [animated]="true"
+      [(ngModel)]="searchInput"
+      (ionInput)="onInput($event)"
+      (ionCancel)="onCancel($event)">
+    </ion-searchbar>
+    <!--<ion-icon class="header-action-icon pull-right bold-ios" name="add" (tap)="goToNewClinic()"></ion-icon>-->
+  </ion-navbar>
+</ion-header>
+<ion-content class="my-clinic-page">
+  <div class="content-title">
+    <ion-title class="truncated">{{activeGroup.title === 'Earth' ? 'Zen HQ' : (activeGroup.title || 'Grouping')}}</ion-title>
+  </div>
+  <div class="page-content">
+
+    <div *ngIf="showList.groups" class="clear-container">
+      <ion-list>
+        <ion-item-sliding *ngFor="let item of groupListFiltered">
+          <ion-item>
+            <button ion-item (click)="itemSelected(item)" class="truncated">
+              {{ item.title }}
+              <ion-icon class="list-icon-absolute" name="arrow-forward"></ion-icon>
+            </button>
+          </ion-item>
+          <!--<ion-item-options>-->
+            <!--<button class="danger" (click)="requestRemove(item)">Delete</button>-->
+          <!--</ion-item-options>-->
+        </ion-item-sliding>
+      </ion-list>
+      <div *ngIf="searchInput" class="info-container">
+        <div *ngIf="groupListFiltered.length" class="plain-text text-center">Showing {{groupListFiltered.length}} of {{groupList.length}} items</div>
+        <div *ngIf="!groupListFiltered.length" class="plain-text text-center">No results found</div>
+      </div>
+    </div>
+
+    <div *ngIf="showList.devices" class="clear-container devices-list-container">
+      <ion-list>
+        <ion-item-sliding *ngFor="let item of groupDevicesListFiltered">
+          <ion-item>
+            <button ion-item (click)="itemSelected(item)" class="truncated">
+              <div class="ion-item-content-left">
+                <span class="ion-item-content-title truncated">{{ item.title }}</span>
+                <span class="ion-item-content-icons">
+                  <span *ngIf="item.type === 'Thermostat'">{{item.heatingSetpoint}} &deg;</span>
+                  <span *ngIf="item.type === 'Thermostat'">{{item.localTemperature}} &deg;</span>
+                  <img class="ion-item-content-icon" src="./../assets/img/circle-{{item.mode.toLowerCase()}}.svg" alt="{{item.mode}}">
+                </span>
+              </div>
+              <div class="device-square-bordered"></div>
+            </button>
+          </ion-item>
+          <!--<ion-item-options>-->
+            <!--<button class="danger" (click)="requestRemove(item)">Delete</button>-->
+          <!--</ion-item-options>-->
+        </ion-item-sliding>
+      </ion-list>
+      <div *ngIf="searchInput" class="info-container">
+        <div *ngIf="groupDevicesListFiltered.length" class="plain-text text-center">Showing {{groupDevicesListFiltered.length}} of {{groupDevicesList.length}} items</div>
+        <div *ngIf="!groupDevicesListFiltered.length" class="plain-text text-center">No results found</div>
+      </div>
+    </div>
+
+    <div class="actions col-xs-12">
+      <button
+        type="button"
+        class="btn-round"
+      >
+        <ion-icon class="btn-ion-icon" name="add"></ion-icon>
+      </button>
+    </div>
+  </div>
+</ion-content>

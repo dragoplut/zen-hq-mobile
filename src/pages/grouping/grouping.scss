@@ -1,0 +1,106 @@
+@import '../../theme/variables';
+
+.my-clinic-page {
+  .custom-header {
+    //.show-back-button {
+    //  display: none !important;
+    //}
+  }
+  .actions {
+    margin: 0;
+    min-height: 50px;
+    padding: 5px 10px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    .btn-round:last-child {
+      margin: 0;
+    }
+  }
+  .page-content {
+    max-height: calc(100vh - 220px);
+    min-height: calc(100vh - 160px);
+    overflow: auto;
+    ion-item-sliding .item-inner {
+      background-image: none !important;
+      color: $col-neutral-text;
+      padding-right: 32px !important;
+    }
+    ion-item-sliding ion-item:first-child {
+      padding-left: 0;
+      ion-label {
+        margin: 0 8px 0 0;
+      }
+    }
+    ion-item-sliding ion-item .item-inner {
+      padding-right: 0 !important;
+    }
+    ion-item-sliding ion-item .item-inner button .item-inner {
+      border: none;
+      padding-right: 32px !important;
+    }
+    ion-item-options {
+      padding-right: 8px;
+
+    }
+    .devices-list-container {
+      ion-item-sliding ion-item .item-inner button .item-inner {
+        padding-right: 0 !important;
+      }
+      ion-item-sliding .item-inner {
+        height: 88px;
+        .label-md, .item-md {
+          height: 88px;
+        }
+        button {
+          height: 88px;
+          .ion-item-content-left {
+            display: inline-block;
+            position: relative;
+            height: 100%;
+            width: calc(100% - 60px);
+            .ion-item-content-title, .ion-item-content-icons {
+              display: block;
+              line-height: 44px;
+              height: 50%;
+              min-width: 100%;
+            }
+            .ion-item-content-icons {
+              padding: 0 20px;
+              span {
+                margin-right: 10px;
+                line-height: 44px;
+                vertical-align: top;
+              }
+            }
+            .ion-item-content-icon {
+              display: inline-block;
+              float: right;
+              position: relative;
+              margin: 5px 65px 5px 0;
+              height: 34px;
+              width: 34px;
+            }
+          }
+          .device-square-bordered {
+            border: 2px solid $secondary-color;
+            border-radius: 5px;
+            display: inline-block;
+            float: right;
+            margin: 19px auto;
+            position: relative;
+            height: 50px;
+            width: 50px;
+            vertical-align: top;
+          }
+        }
+      }
+    }
+  }
+  .info-container {
+    font-size: 1.1em;
+  }
+}
+.show-back-button{
+  display: none !important;
+}

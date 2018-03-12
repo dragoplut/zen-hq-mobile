@@ -1,0 +1,771 @@
+@import '../theme/variables';
+
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+@mixin animationHelper {
+  -webkit-transform: translateZ(0) rotate(0.01deg);
+  -ms-transform: translateZ(0) rotate(0.01deg);
+  transform: translateZ(0) rotate(0.01deg);
+}
+
+/**********************************
+          APP BACKGROUNDS
+***********************************/
+
+.app-root .ion-page {
+  background-color: $col-primary-white;
+  //background: url('../assets/img/zen-hq-bg-white.png') no-repeat center top fixed !important;
+  background-size: 100vw 100vh !important;
+}
+.app-root signin.ion-page {
+  background: url('../assets/img/zen-hq-bg.jpg') no-repeat center top fixed !important;
+  background-size: 100vw 100vh !important;
+}
+.content {
+  background: transparent !important;
+}
+
+/**********************************
+          COMMON STYLES
+***********************************/
+
+ion-header.header {
+  display: block;
+  position: relative;
+  height: 50px;
+}
+ion-header.header-md::after {
+  background-image: none !important;
+  //display: none;
+}
+.content-title {
+  border-bottom: 1px solid #808285;
+  margin: 0 auto;
+  position: fixed;
+  left: 0;
+  top: 50px;
+  padding: 0 5%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  vertical-align: bottom;
+  width: 100%;
+  .toolbar-title {
+    color: $col-neutral-text;
+    font-size: 18px;
+  }
+}
+ion-content {
+  display: block;
+  //padding: 0 16px !important;
+  height: calc(100% - 106px) !important;
+  margin-top: 50px;
+}
+.scroll-content {
+  margin-top: 2px !important;
+  margin-top: constant(safe-area-inset-top) !important;
+  margin-top: env(safe-area-inset-top) !important;
+}
+.ion-page > ion-content {
+  position: relative !important;
+}
+.back-button-text {
+  display: none !important;
+}
+.text-bold {
+  font-weight: 600;
+}
+.bold-ios.icon-ios {
+  font-weight: 600 !important;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.danger {
+  background-color: $col-primary-red;
+  color: $col-primary-white;
+  font-size: $text-body;
+  font-weight: 400;
+}
+.primary-blue {
+  color: $col-neutral-text;
+}
+.secondary-blue {
+  color: $secondary-color;
+}
+.page-content {
+  display: block;
+  position: relative;
+  margin-top: 0;
+  min-height: calc(100vh - 170px);
+}
+.pull-center {
+  margin: 0 auto;
+}
+
+.pull-left {
+  float: left;
+}
+
+.pull-right {
+  float: right;
+}
+
+.link-btn {
+  display: inline-block;
+  font-size: 22px;
+  margin-top: 50px;
+  position: relative;
+}
+
+.link-nav {
+  color: $col-neutral-text;
+  display: inline-block;
+  font-size: 22px;
+  margin-top: 20px;
+  margin-right: 10%;
+  position: relative;
+}
+.link-nav.disabled {
+  color: $col-neutral-placeholder;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.title-blue {
+  @include animationHelper;
+  font-size: 1.5em;
+  font-weight: 300;
+  color: $secondary-color;
+}
+.header-title {
+  position: absolute;
+  bottom: 0;
+  left: calc(50% - 35%);
+  text-align: center;
+  width: 70%;
+}
+.header-action-icon {
+  color: $secondary-color;
+  line-height: 32px;
+  font-size: 32px;
+  margin: 6px 10px 9px 15px;
+  height: 6vw;
+  width: 6vw;
+  vertical-align: middle;
+}
+.header-action-icon-small {
+  line-height: 44px;
+  height: 5.6vw;
+  width: 5.6vw;
+  max-height: 32px;
+  max-width: 32px;
+  vertical-align: middle;
+}
+.dpw-device-panel {
+  display: block;
+  position: relative;
+  margin: 40px auto;
+  text-align: center;
+  width: 30vw;
+  vertical-align: top;
+}
+.dpw-logo-foot {
+  display: block;
+  position: relative;
+  margin: 32px auto;
+  text-align: center;
+  height: 6vw;
+  width: 43vw;
+  vertical-align: bottom;
+}
+.dpw-logo-head {
+  @include animationHelper;
+  margin: 0 auto;
+  width: 65%;
+  //max-width: 350px;
+  vertical-align: middle;
+  max-width: 50vw;
+}
+.btn-nav-head {
+  background-color: transparent;
+  border: none;
+  color: $secondary-color;
+  font-size: 32px;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  line-height: 44px;
+  text-align: center;
+  height: 44px;
+  width: 44px;
+}
+.bottom-absolute {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.info-container {
+  color: $col-neutral-text;
+  display: block;
+  font-size: 1.3em;
+  margin: 0 36px;
+  padding: 0;
+  position: relative;
+}
+forgotten-password .info-container {
+  .plain-text {
+    margin: 40px auto;
+  }
+}
+.info-text-small {
+  color: $col-neutral-placeholder;
+  display: block;
+  font-size: 1em;
+  margin: 0 40px 20px;
+  padding: 0;
+  position: relative;
+  text-align: left;
+}
+.list-icon-absolute {
+  color: $col-neutral-text;
+  position: absolute;
+  right: 10px;
+  top: 11px;
+  font-size: 22px;
+}
+.actions {
+  margin-top: 20px;
+  z-index: 10;
+}
+.additional-content-block {
+  margin-top: -40px;
+  margin-bottom: 10px;
+  padding: 0 24px;
+  contain: content;
+  height: auto;
+  min-height: 140px !important;
+}
+.container-half {
+  display: inline-block;
+  position: relative;
+  width: 49%;
+  vertical-align: top;
+  .custom-input-container {
+    input {
+      margin-bottom: 15px !important;
+      margin-top: 25px !important;
+    }
+  }
+}
+.custom-input-container {
+  position: relative !important;
+  input {
+    z-index: 5;
+  }
+  ion-searchbar {
+    float: right;
+  }
+  ion-searchbar.searchbar {
+    background: transparent !important;
+    padding: 0 !important;
+    .searchbar-clear-icon {
+      height: 36px !important;
+    }
+  }
+}
+.custom-input-label {
+  z-index: -2 !important;
+  opacity: .99 !important;
+}
+.truncated {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: nowrap;
+}
+.left-90 {
+  @include animationHelper;
+  -webkit-transform: rotate(-9deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+.right-90 {
+  @include animationHelper;
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.left-180 {
+  @include animationHelper;
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+.right-180 {
+  @include animationHelper;
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+/**********************************
+      CUSTOM HEADER CONTAINER
+***********************************/
+
+.custom-header {
+  @include animationHelper;
+  //background-color: rgba($color-background, 0.7);
+  background-color: transparent;
+  display: block;
+  padding: 0 !important;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 56px;
+  width: 100%;
+  z-index: 50;
+  .back-button {
+    z-index: 5;
+    margin-top: 2px;
+    margin-top: constant(safe-area-inset-top);
+    margin-top: env(safe-area-inset-top);
+  }
+  .back-button .button-inner .back-button-icon {
+    color: $secondary-color;
+    font-size: 2.5rem !important;
+    margin-left: 4px;
+  }
+  .toolbar-content {
+    //background-color: $color-background;
+    background-color: transparent;
+    position: absolute;
+    bottom: 0;
+    height: 56px;
+    width: 100%;
+    text-align: center;
+    padding: 0;
+    z-index: 6;
+    ion-title.title {
+      box-sizing: border-box;
+      line-height: 50px;
+      height: 50px !important;
+      vertical-align: top;
+      //position: relative;
+      .toolbar-title-ios {
+        position: absolute;
+        text-align: center;
+        top: 3px;
+        left: 0;
+        right: 0;
+        z-index: 0;
+        //max-width: 80%;
+      }
+    }
+    ion-title.title.title-ios {
+
+    }
+    ion-title.title .toolbar-title {
+      box-sizing: border-box;
+      font-weight: 400 !important;
+      color: $secondary-color;
+      line-height: 30px;
+      padding: 0 !important;
+      margin: 12px 0 !important;
+      vertical-align: top;
+    }
+    ion-icon.header-action-icon.pull-left {
+      background-color: transparent;
+      left: 0 !important;
+      font-size: constant(2.5rem !important);
+      font-size: env(2.5rem !important);
+    }
+    .searchbar-md {
+      float: right;
+      padding: 8px;
+      transition: width 0.2s ease;
+      z-index: 11;
+    }
+  }
+  .toolbar-background {
+    //background: rgba($color-background, 0.7) !important;
+    background-color: transparent !important;
+    border: none;
+  }
+  .header-action-icon, .header-action-icon-small {
+    color: $col-neutral-text;
+    font-size: 3rem !important;
+    font-weight: 400;
+    font-weight: constant(600);
+    font-weight: env(600);
+    line-height: 22px;
+    margin: 13px 20px;
+    position: absolute;
+    right: 4px;
+    bottom: 6px;
+    /** iOS styles for top notch related items **/
+    top: 6px;
+    top: constant(safe-area-inset-top);
+    top: env(safe-area-inset-top);
+    z-index: 5;
+    //vertical-align: top !important;
+  }
+}
+
+/**********************************
+      CUSTOM INPUT CONTAINER
+***********************************/
+
+.custom-input-container, .custom-select-container {
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+  width: 67.5%;
+  input, ion-searchbar.searchbar-md {
+    background-color: transparent;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid $col-neutral-placeholder;
+    color: $col-neutral-text;
+    font-size: $text-body;
+    font-weight: 300;
+    display: block;
+    line-height: 36px;
+    margin: 0 auto 21px;
+    padding: 0;
+    outline: none;
+    height: 36px;
+    width: 100%;
+  }
+  input::-webkit-input-placeholder,
+  input:-ms-input-placeholder,
+  input::-moz-placeholder,
+  input:-moz-placeholder {
+    color: $col-neutral-placeholder;
+  }
+  input:focus {
+    border-bottom: 1px solid $col-neutral-text;
+  }
+  input.disabled {
+    border-bottom: 1px solid $col-neutral-placeholder;
+  }
+  input.error {
+    border-bottom: 1px solid $col-primary-red;
+  }
+  ion-searchbar.searchbar-md {
+    input {
+      box-shadow: none;
+    }
+    input::-webkit-input-placeholder,
+    input:-ms-input-placeholder,
+    input::-moz-placeholder,
+    input:-moz-placeholder {
+      color: $col-neutral-placeholder;
+    }
+    input:focus {
+      border-bottom: 1px solid $col-neutral-text;
+    }
+    input.disabled {
+      border-bottom: 1px solid $col-neutral-placeholder;
+    }
+    input.error {
+      border-bottom: 1px solid $col-primary-red;
+    }
+    .searchbar-search-icon {
+      left: 74vw;
+      top: 8px;
+    }
+  }
+  ion-searchbar.searchbar-md.searchbar-has-focus {
+    input {
+      border-bottom: 1px solid $col-neutral-text;
+      padding-left: 0;
+    }
+    input::-webkit-input-placeholder,
+    input:-ms-input-placeholder,
+    input::-moz-placeholder,
+    input:-moz-placeholder {
+      display: none;
+    }
+    .searchbar-search-icon {
+      display: none;
+    }
+  }
+  .custom-input-label {
+    transition: transform .3s ease-out 0s;
+    color: $col-neutral-placeholder;
+    position: absolute;
+    left: 0;
+    top: 10px;
+  }
+  .custom-input-label.input-active {
+    color: $col-neutral-text;
+    font-size: 12px;
+    position: absolute;
+    left: 0;
+    top: -8px;
+  }
+  .custom-input-label.input-not-empty {
+    font-size: 12px;
+    position: absolute;
+    left: 0;
+    top: -8px;
+  }
+  .custom-input-error {
+    color: $col-primary-red;
+    font-size: 10px;
+    position: absolute;
+    right: 0;
+    bottom: -14px;
+  }
+
+}
+.custom-select-container {
+  margin-top: 10px;
+  ion-item.item.item-block.item-select {
+    padding-left: 0;
+    padding-top: 10px;
+    background-color: transparent !important;
+    z-index: 5;
+    ion-select.select {
+      color: $col-neutral-text;
+      padding-left: 0;
+      max-width: 85%;
+      z-index: 10;
+      .select-text {
+        color: $col-neutral-text;
+        font-size: $text-body;
+        font-weight: 300;
+      }
+    }
+  }
+  .custom-select-down-icon {
+    font-size: 18px;
+    opacity: .99;
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+    height: 18px;
+    width: 18px;
+    z-index: -2;
+  }
+  .custom-input-label {
+    top: 25px;
+  }
+  .custom-input-label.input-active,
+  .custom-input-label.input-not-empty {
+    top: 0;
+  }
+  .item-md.item-block .item-inner, .item-ios.item-block .item-inner {
+    border-bottom: 1px solid $col-neutral-text;
+    color: $col-neutral-text;
+    max-height: 30px;
+    width: 100%;
+    vertical-align: top;
+  }
+  .select-icon {
+    display: none;
+  }
+}
+.row-container {
+  display: block;
+  margin: 0 auto 21px;
+  position: relative;
+  text-align: left;
+  height: 36px;
+  width: 80%;
+  .toggle {
+    display: inline-block;
+    padding: 12px 0;
+    position: relative;
+    margin: 0;
+    max-width: 80px;
+  }
+  .toggle-label {
+    color: $col-neutral-text;
+    display: inline-block;
+    line-height: 36px;
+    margin: 0 12px;
+    position: relative;
+    text-align: left;
+    vertical-align: top;
+  }
+}
+
+#map, .map-container {
+  //box-sizing: border-box;
+  display: block;
+  //background: transparent !important;
+  //background-color: transparent !important;
+  //border: 1px solid $col-neutral-label;
+  border-radius: 0.6em !important;
+  //display: flex;
+  //align-items: center;
+  //justify-content: center;
+  position: relative;
+  margin: 20px 40px;
+  //overflow: hidden !important;
+  -webkit-transform: translate3d(0px, 0px, 0px);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  height: 200px !important;
+  min-height: 200px !important;
+  width: calc(100% - 80px);
+  z-index: 120;
+}
+
+.device-details {
+  display: block;
+  margin: 24px;
+  position: relative;
+  text-align: left;
+  text-wrap: normal;
+  word-wrap: break-word;
+  height: auto;
+  width: 100%;
+  .list-icon-absolute {
+    top: 0;
+  }
+}
+
+.create-account, .create-account-form {
+  background: transparent !important;
+}
+
+@media screen and (min-height: 2433px) {
+  .scroll-content {
+    padding-top: 60px !important;
+  }
+}
+
+.list-md ion-item-sliding {
+  background-color: transparent;
+  .item.item-block.item-md {
+    background-color: transparent;
+  }
+  .item.item-block.item-md.activated {
+    background-color: rgba($secondary-color, .5);
+  }
+  .item.item-block .item-inner {
+    border-bottom: 1px solid $secondary-color;
+  }
+}
+
+.md ion-menu .menu-inner {
+  background-color: $col-inactive-textbox-fill;
+  .content {
+    .list-md .item {
+      background-color: $col-inactive-textbox-fill;
+      color: $col-neutral-text;
+    }
+  }
+  .toolbar-background {
+    background-color: $secondary-color;
+  }
+  .toolbar-title {
+    text-align: center;
+    img {
+      margin: 0 auto;
+      max-width: 60%;
+    }
+  }
+}
+
+.ion-searchbar-small {
+  display: inline-block;
+  position: relative;
+  float: right;
+  width: calc(100% - 50px);
+}
+
+.actions {
+  display: block;
+  margin-top: 54px;
+  min-height: 44px;
+  .btn-rounded, .btn-round {
+    cursor: pointer;
+    box-sizing: border-box;
+    background-color: $primary-color;
+    border: none;
+    color: $col-primary-white;
+    margin-bottom: 12px;
+    height: 44px;
+    width: 67.5%;
+  }
+  .btn-round {
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    display: inline-block;
+    float: right;
+    margin: 0 16.3% 0 0;
+    padding: 0;
+    position: relative;
+    border-radius: 50%;
+    width: 44px;
+  }
+  .btn-round.activated {
+    background-color: $secondary-color;
+  }
+  .btn-rounded:disabled, .btn-round:disabled {
+    background-color: $primary-color;
+    border: 1px solid $primary-color;
+    cursor: not-allowed;
+  }
+  .btn-rounded.btn-transparent, .btn-round.btn-transparent {
+    background-color: transparent;
+    border: 1px solid $primary-color;
+    color: $primary-color;
+  }
+  .auth-links-container {
+    display: inline-block;
+    float: left;
+    position: relative;
+    margin-left: 16.3%;
+  }
+  .link {
+    color: $col-primary-white;
+    cursor: pointer;
+    font-size: $text-body;
+    line-height: 28px;
+  }
+  .btn-ion-icon {
+    color: $col-primary-white;
+    line-height: 26px;
+    font-size: 32px;
+    margin: 0 auto;
+    vertical-align: middle;
+  }
+}
+.ion-icon-huge {
+  font-size: 192px;
+  color: $secondary-color;
+  line-height: 192px;
+  margin: 0 auto;
+  height: 80%;
+  width: 80%;
+}
