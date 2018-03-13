@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content class="signin-page">
   <div class="auth row center-xs middle-xs">
     <form
       ngForm
@@ -36,14 +36,6 @@
         >
           <ion-icon class="btn-ion-icon" name="arrow-forward"></ion-icon>
         </button>
-        <!--<button-->
-          <!--type="button"-->
-          <!--class="btn-rounded btn-transparent"-->
-          <!--(click)="goToCreateAccount()"-->
-          <!--[disabled]="loading"-->
-        <!--&gt;-->
-          <!--CREATE NEW ACCOUNT-->
-        <!--</button>-->
         <div class="auth-links-container">
           <a
             class="link"
@@ -55,10 +47,9 @@
         </div>
       </div>
       <div class="warn-container">
-        <span *ngIf="errorMessage" class="warn-message">
-          {{errorMessage}}
-          <i title="Clear" class="fa fa-trash warn-clear-icon" size="lg" (click)="clearError()"></i>
-        </span>
+        <div *ngIf="errorMessage" class="warn-message">
+          <span>{{errorMessage}}</span>
+        </div>
       </div>
     </form>
   </div>

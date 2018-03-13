@@ -8,10 +8,9 @@ import {
 import {
   DEFAULT_ERROR_MESSAGE,
   ZENHQ_LOGO_TRANSPARENT,
-  EMAIL_REGEXP,
-  PAGES_LIST
+  EMAIL_REGEXP
 } from '../../app/constants';
-import { GroupingComponent, CreateAccountComponent, ForgottenPasswordComponent } from '../index';
+import { GroupingComponent, ForgottenPasswordComponent } from '../index';
 import { MenuController, Nav, NavController } from 'ionic-angular';
 
 @Component({
@@ -26,7 +25,6 @@ export class SigninComponent implements OnInit {
   public logoTransparent: string = ZENHQ_LOGO_TRANSPARENT;
   public loading: boolean = false;
   public errorMessage: any = '';
-  public PAGES_LIST: any = PAGES_LIST;
 
   public emailRegExp: any = EMAIL_REGEXP;
 
@@ -141,10 +139,6 @@ export class SigninComponent implements OnInit {
   //     (err: any) => this.handleErr(err)
   //   );
   // }
-
-  public goToCreateAccount() {
-    this.openPage(CreateAccountComponent);
-  }
 
   public openPage(page) {
     this.navCtrl.push(page, { email: this.user.email });

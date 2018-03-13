@@ -68,6 +68,8 @@ signin .content .scroll-content {
       font-weight: 600;
       color: $col-primary-red;
       line-height: 26px;
+      max-width: calc(100% - 40px);
+      margin: 0 auto;
       padding: 15px 20px;
       position: relative;
       //text-shadow: 1px 1px 1px #fff;
@@ -75,9 +77,10 @@ signin .content .scroll-content {
     .warn-container {
       display: block;
       position: relative;
-      margin: 60px auto 10px;
+      margin: 50px auto 10px;
       text-align: center;
-      height: 26px;
+      min-height: 26px;
+      height: auto;
       width: 100%;
       .fa-close {
         color: $col-neutral-placeholder;
@@ -117,4 +120,14 @@ signin .content .scroll-content {
 .not-approved-container button {
   left: calc(50% + 80px);
   width: 50px;
+}
+.signin-page {
+  margin: 0;
+  height: 100vh !important;
+  .scroll-content {
+    padding: 0;
+    .auth {
+      padding: 40px 0;
+    }
+  }
 }

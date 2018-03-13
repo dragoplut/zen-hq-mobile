@@ -5,13 +5,9 @@ import {AlertController, MenuController, NavController, NavParams} from 'ionic-a
 
 import { GroupingService } from '../../services/index';
 import {
-  ANGLE_IMG,
+  MODE_IMG_CHUNK,
   ZENHQ_LOGO_TRANSPARENT
 } from '../../app/constants';
-import {
-  HomeMenu,
-  RegisterClinicAddressComponent
-} from '../index';
 
 @Component({
   selector: 'grouping',
@@ -20,7 +16,7 @@ import {
 export class GroupingComponent {
 
   public logoTransparent: string = ZENHQ_LOGO_TRANSPARENT;
-  public angleImg: string = ANGLE_IMG;
+  public modeImgChunk: string = MODE_IMG_CHUNK;
 
   public searchInput: string = '';
 
@@ -73,15 +69,6 @@ export class GroupingComponent {
     // } else {
     //   this.navCtrl.push(EditClinicComponent, { clinic })
     // }
-  }
-
-  public goBack() {
-    this.openPage(HomeMenu);
-    // this.navCtrl.pop();
-  }
-
-  public goToNewClinic() {
-    this.openPage(RegisterClinicAddressComponent);
   }
 
   public openPage(page) {

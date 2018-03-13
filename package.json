@@ -24,9 +24,6 @@
     "@angular/http": "^4.4.3",
     "@angular/platform-browser": "^4.4.3",
     "@angular/platform-browser-dynamic": "^4.4.3",
-    "@ionic-native/ble": "^4.4.2",
-    "@ionic-native/bluetooth-serial": "^4.3.3",
-    "@ionic-native/camera": "^4.4.2",
     "@ionic-native/core": "4.3.0",
     "@ionic-native/geolocation": "^4.4.2",
     "@ionic-native/google-maps": "^4.5.2",
@@ -38,8 +35,6 @@
     "cordova-browser": "~5.0.1",
     "cordova-custom-config": "^4.0.2",
     "cordova-ios": "~4.5.4",
-    "cordova-plugin-ble-central": "^1.1.4",
-    "cordova-plugin-bluetooth-serial": "^0.4.7",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-device": "^1.1.7",
     "cordova-plugin-googlemaps": "^2.1.1",
@@ -52,7 +47,6 @@
     "ionic-native": "^2.9.0",
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicons": "3.0.0",
-    "ng-circle-progress": "^0.9.8",
     "raven-js": "^3.20.1",
     "rxjs": "^5.4.3",
     "sw-toolbox": "3.6.0",
@@ -90,7 +84,6 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-bluetooth-serial": {},
       "cordova-custom-config": {},
       "cordova-plugin-googlemaps": {
         "API_KEY_FOR_ANDROID": "AIzaSyDJYtcVzKXghryIDmQaTBDp5gWYPbTBqfU",
@@ -99,9 +92,6 @@
         "LOCATION_ALWAYS_USAGE_DESCRIPTION": "Trace your location on the map"
       },
       "cordova-plugin-compat": {},
-      "cordova-plugin-ble-central": {
-        "BLUETOOTH_USAGE_DESCRIPTION": "Bluetooth is used for connection and data transfer with BLE device."
-      },
       "cordova-plugin-network-information": {}
     },
     "platforms": [

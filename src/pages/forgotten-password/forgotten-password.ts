@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { AuthService, ApiService, PermissionService } from '../../services/index';
 import {
-  ANGLE_IMG, EMAIL_REGEXP,
+  EMAIL_REGEXP,
   ZENHQ_LOGO_TRANSPARENT
 } from '../../app/constants';
 import { SigninComponent } from '../index';
@@ -17,7 +17,6 @@ export class ForgottenPasswordComponent implements OnInit {
   public emailRegExp: any = EMAIL_REGEXP;
 
   public logoTransparent: string = ZENHQ_LOGO_TRANSPARENT;
-  public angleImg: string = ANGLE_IMG;
 
   public email: string = '';
   public emailResent: boolean = false;

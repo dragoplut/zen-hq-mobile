@@ -3,9 +3,9 @@ import { App, Nav, Platform, ViewController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import * as pages from '../pages/index';
-import { GoogleService } from '../services/index';
-import { ZENHQ_LOGO_TRANSPARENT } from "./constants";
+import { SigninComponent, GroupingComponent } from '../pages/';
+import { GoogleService } from '../services/';
+import { APP_VERSION, ZENHQ_LOGO_TRANSPARENT } from "./constants";
 
 @Component({
   templateUrl: 'app.html'
@@ -14,7 +14,8 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   public logoTransparent: string = ZENHQ_LOGO_TRANSPARENT;
-  public rootPage: any = pages.SigninComponent;
+  public rootPage: any = SigninComponent;
+  public appVersion: string = APP_VERSION;
 
   public pages: Array<{ title: string, component: any }>;
 
@@ -26,8 +27,8 @@ export class MyApp {
     private _google: GoogleService
   ) {
     this.pages = [
-      { title: 'Grouping', component: pages.GroupingComponent },
-      { title: 'Log Out', component: pages.SigninComponent }
+      { title: 'Grouping', component: GroupingComponent },
+      { title: 'Log Out', component: SigninComponent }
     ];
     this.initApp();
   }

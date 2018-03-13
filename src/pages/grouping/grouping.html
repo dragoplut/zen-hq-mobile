@@ -48,7 +48,7 @@
                 <span class="ion-item-content-icons">
                   <span *ngIf="item.type === 'Thermostat'">{{item.heatingSetpoint}} &deg;</span>
                   <span *ngIf="item.type === 'Thermostat'">{{item.localTemperature}} &deg;</span>
-                  <img class="ion-item-content-icon" src="./../assets/img/circle-{{item.mode.toLowerCase()}}.svg" alt="{{item.mode}}">
+                  <img class="ion-item-content-icon" src="{{modeImgChunk + item.mode.toLowerCase()}}.svg" alt="{{item.mode}}">
                 </span>
               </div>
               <div class="device-square-bordered"></div>

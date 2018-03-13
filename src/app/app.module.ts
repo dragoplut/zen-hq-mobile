@@ -7,20 +7,32 @@ import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { GoogleMaps } from '@ionic-native/google-maps';
-import { Camera } from '@ionic-native/camera';
 
 import { MomentModule } from 'angular2-moment';
-import { NgCircleProgressModule } from 'ng-circle-progress';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
-import { BLE } from '@ionic-native/ble';
-
-import * as components from '../components/index';
-import * as pages from '../pages/index';
-import * as services from '../services/index';
+import {
+  CustomSelectComponent,
+  CustomInputComponent,
+  InputSelectComponent,
+  GooglePlacesAutocompleteComponent
+} from '../components/index';
+import {
+  SigninComponent,
+  ForgottenPasswordComponent,
+  GroupingComponent
+} from '../pages/index';
+import {
+  ApiService,
+  AuthService,
+  AccountService,
+  GoogleService,
+  GroupingService,
+  PermissionService,
+  UtilService
+} from '../services/index';
 
 /** Config "Sentry" raven errors logger service **/
 Raven
@@ -35,44 +47,46 @@ export class RavenErrorHandler implements ErrorHandler {
   }
 }
 
-export const mapValuesToArray = (item: any) => Object.keys(item).map((key: any) => item[key]);
-
 @NgModule({
   declarations: [
     MyApp,
-    ...mapValuesToArray(components),
-    ...mapValuesToArray(pages)
+    CustomSelectComponent,
+    CustomInputComponent,
+    InputSelectComponent,
+    GooglePlacesAutocompleteComponent,
+    SigninComponent,
+    ForgottenPasswordComponent,
+    GroupingComponent
   ],
   imports: [
     MomentModule,
     BrowserModule,
     CommonModule,
     HttpModule,
-    IonicModule.forRoot(MyApp, {}, { links: [] }),
-    NgCircleProgressModule.forRoot({
-      // set defaults here
-      radius: 100,
-      outerStrokeWidth: 6,
-      innerStrokeWidth: 6,
-      outerStrokeColor: "#24408e",
-      innerStrokeColor: "#b3b3b3",
-      animationDuration: 300
-    })
+    IonicModule.forRoot(MyApp, {}, { links: [] })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ...mapValuesToArray(components),
-    ...mapValuesToArray(pages)
+    CustomSelectComponent,
+    CustomInputComponent,
+    InputSelectComponent,
+    GooglePlacesAutocompleteComponent,
+    SigninComponent,
+    ForgottenPasswordComponent,
+    GroupingComponent
   ],
   providers: [
     GoogleMaps,
-    Camera,
-    BluetoothSerial,
     StatusBar,
     SplashScreen,
-    BLE,
-    ...mapValuesToArray(services),
+    ApiService,
+    AuthService,
+    AccountService,
+    GoogleService,
+    GroupingService,
+    PermissionService,
+    UtilService,
     { provide: ErrorHandler, useClass: RavenErrorHandler }
   ],
   schemas: [

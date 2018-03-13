@@ -29,7 +29,6 @@
 
 .app-root .ion-page {
   background-color: $col-primary-white;
-  //background: url('../assets/img/zen-hq-bg-white.png') no-repeat center top fixed !important;
   background-size: 100vw 100vh !important;
 }
 .app-root signin.ion-page {
@@ -422,15 +421,17 @@ forgotten-password .info-container {
     font-weight: 400;
     font-weight: constant(600);
     font-weight: env(600);
-    line-height: 22px;
-    margin: 13px 20px;
+    line-height: 56px;
+    margin: 0;
     position: absolute;
     right: 4px;
     bottom: 6px;
     /** iOS styles for top notch related items **/
-    top: 6px;
+    top: 0;
     top: constant(safe-area-inset-top);
     top: env(safe-area-inset-top);
+    height: 56px;
+    width: 60px;
     z-index: 5;
     //vertical-align: top !important;
   }
@@ -768,4 +769,9 @@ forgotten-password .info-container {
   margin: 0 auto;
   height: 80%;
   width: 80%;
+}
+
+.menu-inner > ion-footer {
+  color: $col-neutral-text;
+  text-align: center;
 }
