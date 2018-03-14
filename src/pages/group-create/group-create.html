@@ -1,0 +1,39 @@
+<ion-header class="my-clinic-page group-create-page">
+  <ion-navbar class="custom-header">
+    <ion-icon class="header-action-icon pull-left" name="arrow-back" (tap)="goToGrouping(activeGroup)"></ion-icon>
+    <ion-title>ZEN HQ</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="my-clinic-page group-create-page">
+  <div class="content-title">
+    <ion-title class="truncated">{{activeGroup.title}}</ion-title>
+    <ion-title class="truncated">{{groupCreate.title}}</ion-title>
+  </div>
+  <div class="page-content">
+
+    <div class="clear-container">
+      <input-select
+        *ngFor="let field of createGroupInputs"
+        [itemDisabled]="field.disabled"
+        [itemValue]="newGroup[field.modelName]"
+        [itemLabel]="field.placeholder"
+        [itemType]="field.type"
+        [itemOptions]="field.options ? field.options : []"
+        [itemError]="_util.validateItem(field, newGroup[field.modelName])"
+        (itemChange)="field.type === 'google-autocomplete' ? applyAddressTo(newGroup, $event) : newGroup[field.modelName] = $event; onChangeValidate()"
+      ></input-select>
+    </div>
+
+    <div class="actions col-xs-12">
+      <button
+        type="button"
+        class="btn-rect"
+        [disabled]="!groupCreate.formValid"
+        [ngClass]="!groupCreate.formValid ? 'disabled' : ''"
+        (tap)="groupCreate.formValid ? create(newGroup) : false"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</ion-content>

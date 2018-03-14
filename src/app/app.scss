@@ -107,6 +107,10 @@ ion-content {
 .secondary-blue {
   color: $secondary-color;
 }
+.shadow {
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
 .page-content {
   display: block;
   position: relative;
@@ -287,6 +291,7 @@ forgotten-password .info-container {
     z-index: 5;
   }
   ion-searchbar {
+    @include animationHelper;
     float: right;
   }
   ion-searchbar.searchbar {
@@ -306,6 +311,29 @@ forgotten-password .info-container {
   text-overflow: ellipsis;
   word-break: break-all;
   white-space: nowrap;
+}
+.truncated-two {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  //max-width: 400px;
+  height: 50px;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  line-height: 25px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  /* required for Opera */
+  -ms-text-overflow: ellipsis;
+  /* required for IE8, allegedly */
+  .toolbar-title {
+    overflow: auto;
+    text-overflow: initial;
+    white-space: initial;
+  }
 }
 .left-90 {
   @include animationHelper;
@@ -441,21 +469,21 @@ forgotten-password .info-container {
       CUSTOM INPUT CONTAINER
 ***********************************/
 
-.custom-input-container, .custom-select-container {
+.custom-input-container, .custom-select-container, input-select google-places-autocomplete {
   display: block;
   position: relative;
   margin: 0 auto;
   padding: 0;
   text-align: left;
-  width: 67.5%;
-  input, ion-searchbar.searchbar-md {
+  width: 76%;
+  input, ion-searchbar.searchbar-md, ion-searchbar .searchbar-input {
     background-color: transparent;
     box-sizing: border-box;
     border: none;
     border-bottom: 1px solid $col-neutral-placeholder;
     color: $col-neutral-text;
     font-size: $text-body;
-    font-weight: 300;
+    font-weight: 400;
     display: block;
     line-height: 36px;
     margin: 0 auto 21px;
@@ -463,6 +491,17 @@ forgotten-password .info-container {
     outline: none;
     height: 36px;
     width: 100%;
+  }
+  ion-searchbar .searchbar-input {
+    color: $col-neutral-text !important;
+    font-size: $text-body !important;
+    font-weight: 400 !important;
+  }
+  ion-searchbar.searchbar-md {
+    border: none;
+  }
+  ion-searchbar .searchbar-clear-icon {
+    right: 0 !important;
   }
   input::-webkit-input-placeholder,
   input:-ms-input-placeholder,
@@ -518,8 +557,15 @@ forgotten-password .info-container {
       display: none;
     }
   }
+  ion-list.list {
+    ion-item.item.item-block.item-md {
+      padding: 0 !important;
+    }
+  }
   .custom-input-label {
-    transition: transform .3s ease-out 0s;
+    @include animationHelper;
+    //transition: transform .3s ease-out 0s;
+    transition: all .2s ease;
     color: $col-neutral-placeholder;
     position: absolute;
     left: 0;
@@ -562,7 +608,7 @@ forgotten-password .info-container {
       .select-text {
         color: $col-neutral-text;
         font-size: $text-body;
-        font-weight: 300;
+        font-weight: 400;
       }
     }
   }
@@ -584,7 +630,7 @@ forgotten-password .info-container {
     top: 0;
   }
   .item-md.item-block .item-inner, .item-ios.item-block .item-inner {
-    border-bottom: 1px solid $col-neutral-text;
+    border-bottom: 1px solid $col-neutral-placeholder;
     color: $col-neutral-text;
     max-height: 30px;
     width: 100%;
@@ -708,7 +754,7 @@ forgotten-password .info-container {
   display: block;
   margin-top: 54px;
   min-height: 44px;
-  .btn-rounded, .btn-round {
+  .btn-rounded, .btn-round, .btn-rect {
     cursor: pointer;
     box-sizing: border-box;
     background-color: $primary-color;
@@ -716,11 +762,9 @@ forgotten-password .info-container {
     color: $col-primary-white;
     margin-bottom: 12px;
     height: 44px;
-    width: 67.5%;
+    width: 76%;
   }
   .btn-round {
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     display: inline-block;
     float: right;
     margin: 0 16.3% 0 0;
@@ -729,15 +773,22 @@ forgotten-password .info-container {
     border-radius: 50%;
     width: 44px;
   }
-  .btn-round.activated {
+  .btn-rect {
+    display: inline-block;
+    font-size: $text-header;
+    padding: 0;
+    position: relative;
+    width: 76vw;
+  }
+  .btn-round.activated, .btn-rect.activated {
     background-color: $secondary-color;
   }
-  .btn-rounded:disabled, .btn-round:disabled {
+  .btn-rounded:disabled, .btn-round:disabled, .btn-rect:disabled {
     background-color: $primary-color;
     border: 1px solid $primary-color;
     cursor: not-allowed;
   }
-  .btn-rounded.btn-transparent, .btn-round.btn-transparent {
+  .btn-rounded.btn-transparent, .btn-round.btn-transparent, .btn-rect.btn-transparent {
     background-color: transparent;
     border: 1px solid $primary-color;
     color: $primary-color;

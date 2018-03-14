@@ -9,7 +9,7 @@
       (ionInput)="onInput($event)"
       (ionCancel)="onCancel($event)">
     </ion-searchbar>
-    <!--<ion-icon class="header-action-icon pull-right bold-ios" name="add" (tap)="goToNewClinic()"></ion-icon>-->
+    <!--<ion-icon class="header-action-icon pull-right bold-ios" name="add" (tap)="doSomething()"></ion-icon>-->
   </ion-navbar>
 </ion-header>
 <ion-content class="my-clinic-page">
@@ -67,10 +67,11 @@
 
     <div class="actions col-xs-12">
       <button
+        *ngIf="activeGroup.level < 4"
         type="button"
-        class="btn-round"
+        class="btn-round shadow"
       >
-        <ion-icon class="btn-ion-icon" name="add"></ion-icon>
+        <ion-icon class="btn-ion-icon" name="add" (tap)="groupCreateFor(activeGroup)"></ion-icon>
       </button>
     </div>
   </div>

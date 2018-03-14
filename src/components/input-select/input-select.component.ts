@@ -20,7 +20,7 @@ export class InputSelectComponent {
   @Input() public itemDisabled: boolean = true;
   @Output() public itemChange = new EventEmitter();
 
-  public valueChange() {
-    this.itemChange.next(this.itemValue);
+  public valueChange(value?: any) {
+    this.itemChange.next(value || this.itemValue);
   }
 }

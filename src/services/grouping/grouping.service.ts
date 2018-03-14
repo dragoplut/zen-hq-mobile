@@ -10,13 +10,7 @@ import {APP_USER} from "../../app/constants";
 export class GroupingService {
   public path: string = '/group';
   // public clinicAllowedFields: any[] = [
-  //   'id',
-  //   'name',
-  //   'location',
-  //   'phoneNumber',
-  //   'contactPerson',
-  //   'webSiteUrl',
-  //   'finderPageEnabled'
+  //   'id'
   // ];
 
   constructor(
@@ -48,6 +42,10 @@ export class GroupingService {
   //   const clinicData: any = _.pick(data, this.clinicAllowedFields);
   //   return this.api.post(`${this.path}/update`, clinicData);
   // }
+
+  public createGroup(data: any): Observable<any> {
+    return this.api.post(`${this.path}`, { data });
+  }
 
   public getGroups(): Observable<any> {
     return this.api.get(`${this.path}/clinics`)

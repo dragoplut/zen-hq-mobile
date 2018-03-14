@@ -1,5 +1,5 @@
 <custom-input
-  *ngIf="itemType !== 'select'"
+  *ngIf="itemType !== 'select' && itemType !== 'google-autocomplete'"
   [itemDisabled]="itemDisabled"
   [itemValue]="itemValue"
   [itemLabel]="itemLabel"
@@ -17,3 +17,12 @@
   [itemError]="itemError"
   (itemChange)="itemValue = $event; valueChange($event)"
 ></custom-select>
+<google-places-autocomplete
+  *ngIf="itemType === 'google-autocomplete'"
+  types="geocode"
+  [addressValue]="itemValue"
+  (placeholder)="itemLabel"
+  (callback)="valueChange($event[0]); itemValue = $event[0].formatted_address"
+  (inputChanged)="itemValue = $event"
+  key="AIzaSyDJYtcVzKXghryIDmQaTBDp5gWYPbTBqfU"
+></google-places-autocomplete>

@@ -21,6 +21,9 @@ export class CustomSelectComponent {
   @Output() public itemChange = new EventEmitter();
 
   public valueChange() {
-    this.itemChange.next(this.itemValue);
+    console.log('CustomSelectComponent valueChange this.itemValue: ', this.itemValue);
+    const val: any = this.itemOptions && this.itemOptions[0] && typeof this.itemOptions[0].value === 'number' ?
+      parseInt(this.itemValue, 10) : this.itemValue;
+    this.itemChange.next(val);
   }
 }

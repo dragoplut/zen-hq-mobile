@@ -22,6 +22,7 @@ import {
 import {
   SigninComponent,
   ForgottenPasswordComponent,
+  GroupCreateComponent,
   GroupingComponent
 } from '../pages/index';
 import {
@@ -42,21 +43,22 @@ Raven
 export class RavenErrorHandler implements ErrorHandler {
   handleError(err:any) : void {
     /** Uncomment only for dev testing purpose **/
-    // console.error(err);
+    console.error(err);
     Raven.captureException(err);
   }
 }
 
 @NgModule({
   declarations: [
-    MyApp,
     CustomSelectComponent,
     CustomInputComponent,
     InputSelectComponent,
     GooglePlacesAutocompleteComponent,
-    SigninComponent,
     ForgottenPasswordComponent,
-    GroupingComponent
+    GroupCreateComponent,
+    GroupingComponent,
+    SigninComponent,
+    MyApp
   ],
   imports: [
     MomentModule,
@@ -67,14 +69,15 @@ export class RavenErrorHandler implements ErrorHandler {
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
     CustomSelectComponent,
     CustomInputComponent,
     InputSelectComponent,
     GooglePlacesAutocompleteComponent,
-    SigninComponent,
     ForgottenPasswordComponent,
-    GroupingComponent
+    GroupCreateComponent,
+    GroupingComponent,
+    SigninComponent,
+    MyApp
   ],
   providers: [
     GoogleMaps,

@@ -5,7 +5,8 @@ import 'rxjs/add/operator/map';
 // noinspection TypeScriptCheckImport
 import * as _ from 'lodash';
 
-import { T_LOCATION_PARAMS } from '../../app/types';
+import { EMAIL_REGEXP } from '../../app/constants';
+import { T_LOCATION_PARAMS, T_INPUT_SELECT_PROPS } from '../../app/types';
 
 @Injectable()
 export class UtilService {
@@ -55,5 +56,48 @@ export class UtilService {
       buffer.push(chunk);
     }
     return { buffer, bytesLength };
+  }
+
+  /**
+   * Validate
+   * @param {T_INPUT_SELECT_PROPS} field
+   * @param value
+   * @returns {string}
+   */
+  public validateItem(field: T_INPUT_SELECT_PROPS, value: any) {
+    let errMessage: string = '';
+
+    switch (field.type) {
+      case 'email':
+        errMessage = !EMAIL_REGEXP.test(value) && value ?
+          'Email is invalid' : '';
+        break;
+      case 'text':
+      case 'google-autocomplete':
+        if (typeof value === 'string') {
+          if (value && value.length < 2) {
+            errMessage = `${field.placeholder} min length 2 characters!`;
+          }
+          if (value && value.length > 50) {
+            errMessage = `${field.placeholder} max length 50 characters!`;
+          }
+          if (!value) {
+            errMessage = `${field.placeholder} max length 50 characters!`;
+          }
+        }
+        break;
+      case 'select':
+        if (typeof value === 'number' && (value !== 0 && !value)) {
+          errMessage = `${field.placeholder} field is required!`;
+        }
+        if (typeof value === 'string' && !value) {
+          errMessage = `${field.placeholder} field is required!`;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return errMessage;
   }
 }

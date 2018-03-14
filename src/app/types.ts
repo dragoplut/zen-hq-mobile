@@ -1,3 +1,16 @@
+export type T_INPUT_SELECT_PROPS = {
+  modelName: string,
+  placeholder: string,
+  type: string,
+  required: boolean,
+  options?: T_SELECT_OPTION[]
+};
+
+export type T_SELECT_OPTION = {
+  value: any,
+  viewValue: string
+};
+
 export type T_INTERFACE_CHARACTERISTICS = {
   type?: string,
   name: string,

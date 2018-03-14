@@ -87,17 +87,16 @@ export class ApiService implements OnInit {
   }
 
   public checkForError(resp: Response): Response {
-    console.log('checkForError resp: ', resp);
     if (resp.status >= 200 && resp.status < 300) {
       return resp;
     } else if (resp.status === 401) {
       const error = new Error(resp.statusText);
       error['response'] = resp;
-      this.post('/auth/signOut', {})
-        .subscribe(
-          (done: any) => { console.log('checkForError done: ', done); },
-          (err: any) => { console.log('checkForError err: ', err); }
-        );
+      // this.post('/auth/signOut', {})
+      //   .subscribe(
+      //     (done: any) => { console.log('checkForError done: ', done); },
+      //     (err: any) => { console.log('checkForError err: ', err); }
+      //   );
       throw error;
     } else {
       const error = new Error(resp.statusText);
@@ -125,7 +124,6 @@ export class ApiService implements OnInit {
         'Accept': 'application/json',
         'Content-type': 'application/json'
       });
-    console.log('getDefaultOptions headers: ', headers);
     return new RequestOptions({ headers });
   }
 

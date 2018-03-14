@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import {AlertController, MenuController, NavController, NavParams} from 'ionic-angular';
 // noinspection TypeScriptCheckImport
-// import * as _ from 'lodash';
+import * as _ from 'lodash';
 
+import { GroupCreateComponent } from '../index';
 import { GroupingService } from '../../services/index';
 import {
   MODE_IMG_CHUNK,
@@ -45,7 +46,12 @@ export class GroupingComponent {
 
   public ionViewDidLoad() {
     this.dependencies = this.navParams.get('dependencies') || {};
-    this.getGroup();
+    if (this.dependencies && this.dependencies.activeGroup && this.dependencies.activeGroup.id) {
+      this.activeGroup = _.clone(this.dependencies.activeGroup);
+      this.getGroup(this.dependencies.activeGroup.id);
+    } else {
+      this.getGroup();
+    }
   }
 
   public onInput(event) {
@@ -71,7 +77,13 @@ export class GroupingComponent {
     // }
   }
 
-  public openPage(page) {
+  public groupCreateFor(group: any) {
+    console.log('groupCreateFor group: ', group);
+    this.dependencies.activeGroup = _.clone(group);
+    this.openPage(GroupCreateComponent);
+  }
+
+  public openPage(page: any) {
     this.navCtrl.push(page, { dependencies: this.dependencies });
   }
 
@@ -80,6 +92,7 @@ export class GroupingComponent {
       (resp: any) => {
         console.log('resp: ', resp);
         this.activeGroup = resp.data;
+        this.dependencies.activeGroup = _.clone(resp.data);
         if (this.activeGroup.level < 4) {
           this.getGroupChildren(this.activeGroup);
         } else {
