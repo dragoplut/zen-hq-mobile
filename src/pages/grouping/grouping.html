@@ -51,7 +51,7 @@
                   <img class="ion-item-content-icon" src="{{modeImgChunk + item.mode.toLowerCase()}}.svg" alt="{{item.mode}}">
                 </span>
               </div>
-              <div class="device-square-bordered"></div>
+              <div class="device-square-bordered extraStatus-{{item.extraStatus}}"></div>
             </button>
           </ion-item>
           <!--<ion-item-options>-->
@@ -67,9 +67,25 @@
 
     <div class="actions col-xs-12">
       <button
+        [disabled]="true"
+        *ngIf="activeGroup.level > 2"
+        type="button"
+        class="btn-round float-left shadow"
+      >
+        <ion-icon class="btn-ion-icon" name="calendar" (tap)="override(activeGroup)"></ion-icon>
+        <ion-icon class="btn-ion-icon icon-absolute-right" name="time" (tap)="override(activeGroup)"></ion-icon>
+      </button>
+      <button
+        *ngIf="activeGroup.level > 0"
+        type="button"
+        class="btn-round center-absolute shadow"
+      >
+        <ion-icon class="btn-ion-icon" name="create" (tap)="groupEdit(activeGroup)"></ion-icon>
+      </button>
+      <button
         *ngIf="activeGroup.level < 4"
         type="button"
-        class="btn-round shadow"
+        class="btn-round float-right shadow"
       >
         <ion-icon class="btn-ion-icon" name="add" (tap)="groupCreateFor(activeGroup)"></ion-icon>
       </button>

@@ -117,16 +117,23 @@ ion-content {
   margin-top: 0;
   min-height: calc(100vh - 170px);
 }
-.pull-center {
-  margin: 0 auto;
+.pull-center, .float-none {
+  float: none;
+  margin: 0 auto !important;
 }
 
-.pull-left {
+.pull-left, .float-left {
   float: left;
 }
 
-.pull-right {
+.pull-right, .float-right {
   float: right;
+}
+
+.center-absolute {
+  position: absolute !important;
+  top: 0;
+  left: calc(50% - 22px);
 }
 
 .link-btn {
@@ -263,6 +270,7 @@ forgotten-password .info-container {
 }
 .actions {
   margin-top: 20px;
+  text-align: center;
   z-index: 10;
 }
 .additional-content-block {
@@ -754,65 +762,90 @@ forgotten-password .info-container {
   display: block;
   margin-top: 54px;
   min-height: 44px;
-  .btn-rounded, .btn-round, .btn-rect {
-    cursor: pointer;
-    box-sizing: border-box;
-    background-color: $primary-color;
-    border: none;
-    color: $col-primary-white;
-    margin-bottom: 12px;
-    height: 44px;
-    width: 76%;
-  }
-  .btn-round {
-    display: inline-block;
-    float: right;
-    margin: 0 16.3% 0 0;
-    padding: 0;
-    position: relative;
-    border-radius: 50%;
-    width: 44px;
-  }
-  .btn-rect {
-    display: inline-block;
-    font-size: $text-header;
-    padding: 0;
-    position: relative;
-    width: 76vw;
-  }
-  .btn-round.activated, .btn-rect.activated {
-    background-color: $secondary-color;
-  }
-  .btn-rounded:disabled, .btn-round:disabled, .btn-rect:disabled {
-    background-color: $primary-color;
-    border: 1px solid $primary-color;
-    cursor: not-allowed;
-  }
-  .btn-rounded.btn-transparent, .btn-round.btn-transparent, .btn-rect.btn-transparent {
-    background-color: transparent;
-    border: 1px solid $primary-color;
-    color: $primary-color;
-  }
-  .auth-links-container {
-    display: inline-block;
-    float: left;
-    position: relative;
-    margin-left: 16.3%;
-  }
-  .link {
-    color: $col-primary-white;
-    cursor: pointer;
-    font-size: $text-body;
-    line-height: 28px;
-  }
-  .btn-ion-icon {
-    color: $col-primary-white;
-    line-height: 26px;
-    font-size: 32px;
-    margin: 0 auto;
-    vertical-align: middle;
-  }
 }
+.btn-rounded, .btn-round, .btn-rect {
+  cursor: pointer;
+  box-sizing: border-box;
+  background-color: $primary-color;
+  border: none;
+  color: $col-primary-white;
+  margin-bottom: 12px;
+  height: 44px;
+  width: 76%;
+}
+.btn-round {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  border-radius: 50%;
+  width: 44px;
+}
+.btn-rect {
+  display: inline-block;
+  font-size: $text-header;
+  padding: 0;
+  position: relative;
+  width: 76vw;
+}
+.btn-round.activated, .btn-rect.activated {
+  background-color: $secondary-color;
+}
+.btn-rounded:disabled, .btn-round:disabled, .btn-rect:disabled {
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
+  cursor: not-allowed;
+}
+.btn-rounded.btn-transparent, .btn-round.btn-transparent, .btn-rect.btn-transparent {
+  background-color: transparent;
+  border: 1px solid $primary-color;
+  color: $primary-color;
+}
+.auth-links-container {
+  display: inline-block;
+  float: left;
+  position: relative;
+  margin-left: 16.3%;
+}
+.link {
+  color: $col-primary-white;
+  cursor: pointer;
+  font-size: $text-body;
+  line-height: 28px;
+}
+.btn-ion-icon {
+  color: $col-primary-white;
+  line-height: 26px;
+  font-size: 32px;
+  margin: 0 auto;
+  vertical-align: middle;
+}
+.btn-ion-icon.icon-absolute-right {
+  position: absolute !important;
+  color: $col-neutral-text;
+  line-height: 22px;
+  font-size: 22px;
+  top: 5px;
+  right: 4px;
+  font-weight: 600;
+}
+.btn-title-absolute {
+  color: $col-neutral-text;
+  position: absolute;
+  top: 14px;
+  left: 60px;
+  height: max-content;
+  width: max-content;
+  z-index: 10;
+  font-size: 16px;
+}
+.content-actions {
+  box-sizing: border-box;
+  margin: 0 12%;
+  height: auto;
+  width: 100%;
+}
+
 .ion-icon-huge {
   font-size: 192px;
   color: $secondary-color;
@@ -825,4 +858,53 @@ forgotten-password .info-container {
 .menu-inner > ion-footer {
   color: $col-neutral-text;
   text-align: center;
+}
+
+.my-clinic-page {
+  .page-content {
+    .devices-list-container {
+      ion-item-sliding .item-inner {
+        button {
+          .device-square-bordered {
+            border: 2px solid $secondary-color;
+            border-radius: 5px;
+            display: inline-block;
+            float: right;
+            margin: 19px auto;
+            position: relative;
+            height: 50px;
+            width: 50px;
+            vertical-align: top;
+          }
+          .extraStatus-online {
+            border-color: #6fc9c4;
+          }
+          .extraStatus-offline {
+            border-color: #df584f;
+          }
+          .extraStatus-inactive {
+            border: 2px solid #ffd54c;
+            background-image: url('../assets/img/wifi.svg');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+          }
+          .extraStatus-lowBattery {
+            border: 2px solid #ffd54c;
+            background-image: url('../assets/img/low-battery.svg');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+          }
+          .extraStatus-filter-needs-changing {
+            border: 2px solid #ffd54c;
+            background-image: url('../assets/img/filter.svg');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+          }
+        }
+      }
+    }
+  }
 }

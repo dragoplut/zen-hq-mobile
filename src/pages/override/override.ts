@@ -12,10 +12,10 @@ import {
 } from '../../app/constants';
 
 @Component({
-  selector: 'group-create',
-  templateUrl: 'group-create.html'
+  selector: 'override',
+  templateUrl: 'override.html'
 })
-export class GroupCreateComponent {
+export class OverrideComponent {
 
   public logoTransparent: string = ZENHQ_LOGO_TRANSPARENT;
 
@@ -60,32 +60,7 @@ export class GroupCreateComponent {
   }
 
   public save(group: any): void {
-    if (this.dependencies.edit) {
-
-      console.log('update group: ', group);
-      this._grouping.updateGroup(group).subscribe(
-        (resp: any) => {
-          console.log('resp: ', resp);
-          // this.activeGroup = resp.data;
-          this.goToGrouping(this.activeGroup);
-        },
-        (err: any) => {
-          console.log('err: ', err);
-        }
-      );
-    } else {
-      console.log('create group: ', group);
-      this._grouping.createGroup(group).subscribe(
-        (resp: any) => {
-          console.log('resp: ', resp);
-          // this.activeGroup = resp.data;
-          this.goToGrouping(this.activeGroup);
-        },
-        (err: any) => {
-          console.log('err: ', err);
-        }
-      );
-    }
+    console.log('save override group: ', group);
   }
 
   public goToGrouping(group: any) {

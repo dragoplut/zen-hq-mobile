@@ -24,13 +24,25 @@
       ></input-select>
     </div>
 
+    <div class="content-actions">
+      <button
+        [disabled]="true"
+        *ngIf="dependencies.edit && activeGroup.level === 3"
+        type="button"
+        class="btn-round float-left shadow"
+      >
+        <ion-icon class="btn-ion-icon" name="add" (tap)="false"></ion-icon>
+        <span class="btn-title-absolute">Add hub</span>
+      </button>
+    </div>
+
     <div class="actions col-xs-12">
       <button
         type="button"
         class="btn-rect"
         [disabled]="!groupCreate.formValid"
         [ngClass]="!groupCreate.formValid ? 'disabled' : ''"
-        (tap)="groupCreate.formValid ? create(newGroup) : false"
+        (tap)="groupCreate.formValid ? save(newGroup) : false"
       >
         Save
       </button>

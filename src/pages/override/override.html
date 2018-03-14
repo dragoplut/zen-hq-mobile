@@ -1,0 +1,29 @@
+<ion-header class="my-clinic-page group-create-page">
+  <ion-navbar class="custom-header">
+    <ion-icon class="header-action-icon pull-left" name="arrow-back" (tap)="goToGrouping(activeGroup)"></ion-icon>
+    <ion-title>ZEN HQ</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="my-clinic-page group-create-page">
+  <div class="content-title">
+    <ion-title class="truncated">{{activeGroup.title}}</ion-title>
+  </div>
+  <div class="page-content">
+
+    <div class="clear-container">
+      Some content will be here...
+    </div>
+
+    <div class="actions col-xs-12">
+      <button
+        type="button"
+        class="btn-rect"
+        [disabled]="!groupCreate.formValid"
+        [ngClass]="!groupCreate.formValid ? 'disabled' : ''"
+        (tap)="groupCreate.formValid ? save(newGroup) : false"
+      >
+        Apply Override
+      </button>
+    </div>
+  </div>
+</ion-content>

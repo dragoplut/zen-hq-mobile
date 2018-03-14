@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 14 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>battery</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="battery" transform="translate(-1.000000, 0.000000)" fill-rule="nonzero" fill="#ffd54c">
+            <path d="M14.69,5.3 C14.8,5.3 14.89,4.64 14.89,3.83 C14.89,3.02 14.8,2.36 14.69,2.36 L13.75,2.36 C13.64,2.36 13.54,3.02 13.54,3.83 C13.54,4.64 13.64,5.3 13.75,5.3 L14.69,5.3 Z" id="Shape"></path>
+            <path d="M4.61,6.2 L3.49,1.62 L12.4,1.62 C12.3072402,2.35292565 12.2638091,3.09125372 12.27,3.83 C12.2598336,4.62300853 12.3133388,5.41555367 12.43,6.2 L4.61,6.2 Z M13.24,3.83 C13.24,2.12 13.43,0.73 13.67,0.73 L1.41,0.73 C1.18,0.73 0.99,2.12 0.99,3.83 C0.99,5.54 1.18,6.92 1.41,6.92 L13.67,6.92 C13.43,6.92 13.24,5.54 13.24,3.83 L13.24,3.83 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>

@@ -21,6 +21,7 @@ import {
 } from '../components/index';
 import {
   SigninComponent,
+  OverrideComponent,
   ForgottenPasswordComponent,
   GroupCreateComponent,
   GroupingComponent
@@ -57,6 +58,7 @@ export class RavenErrorHandler implements ErrorHandler {
     ForgottenPasswordComponent,
     GroupCreateComponent,
     GroupingComponent,
+    OverrideComponent,
     SigninComponent,
     MyApp
   ],
@@ -76,6 +78,7 @@ export class RavenErrorHandler implements ErrorHandler {
     ForgottenPasswordComponent,
     GroupCreateComponent,
     GroupingComponent,
+    OverrideComponent,
     SigninComponent,
     MyApp
   ],

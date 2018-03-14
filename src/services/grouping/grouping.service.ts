@@ -4,7 +4,7 @@ import { ApiService } from '../';
 import 'rxjs/add/operator/map';
 import {APP_USER} from "../../app/constants";
 // noinspection TypeScriptCheckImport
-// import * as _ from 'lodash';
+import * as _ from 'lodash';
 
 @Injectable()
 export class GroupingService {
@@ -35,7 +35,7 @@ export class GroupingService {
   }
 
   public getGroupDevices(id: string): Observable<any> {
-    return this.api.get(`${this.path}/${id}/devices`).map((res: any) => res);
+    return this.api.get(`${this.path}/${id}/devices/search?extraStatus=all`).map((res: any) => res);
   }
 
   // public updateGroup(data: any): Observable<any> {
@@ -45,6 +45,16 @@ export class GroupingService {
 
   public createGroup(data: any): Observable<any> {
     return this.api.post(`${this.path}`, { data });
+  }
+
+  public updateGroup(group: any): Observable<any> {
+    const data: any = _.pick(group, [
+      'title',
+      'utcOffset',
+      'location',
+      'hubs'
+    ]);
+    return this.api.put(`${this.path}/${group.id}`, { data });
   }
 
   public getGroups(): Observable<any> {

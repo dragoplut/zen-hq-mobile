@@ -3,7 +3,7 @@ import {AlertController, MenuController, NavController, NavParams} from 'ionic-a
 // noinspection TypeScriptCheckImport
 import * as _ from 'lodash';
 
-import { GroupCreateComponent } from '../index';
+import { GroupCreateComponent, OverrideComponent } from '../index';
 import { GroupingService } from '../../services/index';
 import {
   MODE_IMG_CHUNK,
@@ -56,15 +56,19 @@ export class GroupingComponent {
 
   public onInput(event) {
     if (event.target.value) {
-      this.groupListFiltered = this.searchByString(event.target.value, this.groupList);
+      if (this.showList.groups) {
+        this.groupListFiltered = this.searchByString(event.target.value,this.groupList);
+      } else {
+        this.groupDevicesListFiltered = this.searchByString(event.target.value, this.groupDevicesList);
+      }
     } else {
-      this.getGroup();
+      this.getGroup(this.activeGroup.id);
     }
   }
 
   public onCancel() {
     this.searchInput = '';
-    this.getGroup();
+    this.getGroup(this.activeGroup.id);
   }
 
   public itemSelected(group: any) {
@@ -83,11 +87,25 @@ export class GroupingComponent {
     this.openPage(GroupCreateComponent);
   }
 
+  public groupEdit(group: any) {
+    console.log('groupEdit group: ', group);
+    this.dependencies.activeGroup = _.clone(group);
+    this.dependencies.edit = true;
+    this.openPage(GroupCreateComponent);
+  }
+
+  public override(group: any) {
+    console.log('override group: ', group);
+    this.dependencies.activeGroup = _.clone(group);
+    this.openPage(OverrideComponent);
+  }
+
   public openPage(page: any) {
     this.navCtrl.push(page, { dependencies: this.dependencies });
   }
 
   public getGroup(id?: string) {
+    this.dependencies.edit = false;
     this._grouping.getGroup(id).subscribe(
       (resp: any) => {
         console.log('resp: ', resp);
