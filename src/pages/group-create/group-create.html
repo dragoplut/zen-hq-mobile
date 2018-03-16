@@ -24,17 +24,17 @@
       ></input-select>
     </div>
 
-    <div class="content-actions">
-      <button
-        [disabled]="true"
-        *ngIf="dependencies.edit && activeGroup.level === 3"
-        type="button"
-        class="btn-round float-left shadow"
-      >
-        <ion-icon class="btn-ion-icon" name="add" (tap)="false"></ion-icon>
-        <span class="btn-title-absolute">Add hub</span>
-      </button>
-    </div>
+    <!--<div class="content-actions">-->
+      <!--<button-->
+        <!--[disabled]="false"-->
+        <!--*ngIf="dependencies.edit && activeGroup.level === 3"-->
+        <!--type="button"-->
+        <!--class="btn-round float-left shadow"-->
+      <!--&gt;-->
+        <!--<ion-icon class="btn-ion-icon" name="add" (tap)="goToThermostat(activeGroup)"></ion-icon>-->
+        <!--<span class="btn-title-absolute">Add hub</span>-->
+      <!--</button>-->
+    <!--</div>-->
 
     <div class="actions col-xs-12">
       <button

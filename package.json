@@ -27,6 +27,7 @@
     "@ionic-native/core": "4.3.0",
     "@ionic-native/geolocation": "^4.4.2",
     "@ionic-native/google-maps": "^4.5.2",
+    "@ionic-native/hotspot": "^4.5.3",
     "@ionic-native/splash-screen": "4.3.0",
     "@ionic-native/status-bar": "4.3.0",
     "@ionic/storage": "2.0.1",
@@ -39,6 +40,7 @@
     "cordova-plugin-device": "^1.1.7",
     "cordova-plugin-googlemaps": "^2.1.1",
     "cordova-plugin-googlemaps-sdk": "git+https://github.com/mapsplugin/cordova-plugin-googlemaps-sdk.git",
+    "cordova-plugin-hotspot": "^1.2.10",
     "cordova-plugin-network-information": "^2.0.1",
     "cordova-plugin-splashscreen": "^4.1.0",
     "cordova-plugin-statusbar": "^2.4.0",
@@ -92,7 +94,8 @@
         "LOCATION_ALWAYS_USAGE_DESCRIPTION": "Trace your location on the map"
       },
       "cordova-plugin-compat": {},
-      "cordova-plugin-network-information": {}
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-hotspot": {}
     },
     "platforms": [
       "browser",

@@ -3,7 +3,7 @@ import {AlertController, MenuController, NavController, NavParams} from 'ionic-a
 // noinspection TypeScriptCheckImport
 import * as _ from 'lodash';
 
-import { GroupCreateComponent, OverrideComponent } from '../index';
+import { GroupCreateComponent, OverrideComponent, ThermostatComponent } from '../index';
 import { GroupingService } from '../../services/index';
 import {
   MODE_IMG_CHUNK,
@@ -84,7 +84,11 @@ export class GroupingComponent {
   public groupCreateFor(group: any) {
     console.log('groupCreateFor group: ', group);
     this.dependencies.activeGroup = _.clone(group);
-    this.openPage(GroupCreateComponent);
+    if (group.level < 4) {
+      this.openPage(GroupCreateComponent);
+    } else {
+      this.openPage(ThermostatComponent);
+    }
   }
 
   public groupEdit(group: any) {

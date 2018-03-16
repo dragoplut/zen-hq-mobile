@@ -1,0 +1,131 @@
+<ion-header class="my-clinic-page group-create-page">
+  <ion-navbar class="custom-header">
+    <ion-icon
+      class="header-action-icon pull-left"
+      name="arrow-back" (tap)="step && step < 5 ? step = step - 1 : goToGroup(activeGroup)"
+    ></ion-icon>
+    <ion-title>ZEN HQ</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="my-clinic-page group-create-page">
+  <div class="content-title">
+    <ion-title class="truncated">{{activeGroup.title}}</ion-title>
+    <ion-title class="truncated" *ngIf="step > 1">{{data.device.title}}</ion-title>
+  </div>
+  <div class="page-content">
+
+    <div class="clear-container text-center" *ngIf="!step">
+      <button
+        *ngFor="let item of thermostatBtns"
+        [disabled]="item.type !== 'zenWifi'"
+        type="button"
+        class="btn-rect shadow"
+        (tap)="addThermostat(item.type)"
+      >
+        {{item.title}}
+      </button>
+    </div>
+
+    <div class="clear-container text-center" *ngIf="step === 1">
+      <custom-input
+        *ngFor="let inputItem of provisionInputs"
+        [itemDisabled]="false"
+        [itemValue]="data.device[inputItem.modelName]"
+        [itemLabel]="inputItem.placeholder"
+        [itemType]="inputItem.type"
+        [itemError]="inputItem.modelName === 'title' && data.device[inputItem.modelName] && data.device[inputItem.modelName].length > 10 ? 'Name is too long!' : ''"
+        (itemChange)="data.device[inputItem.modelName] = $event"
+      ></custom-input>
+    </div>
+
+    <div *ngIf="step === 2" class="clear-container text-center">
+      <h6>Connect to device WiFi Network</h6>
+      <h6>Please follow the instruction:</h6>
+      <ul class="device-connection-steps text-left">
+        <li>power on your Zen Wifi thermostat and press 5 times the Network button to join</li>
+        <li>find a new WiFi access point with name that starts with "Zen"</li>
+        <li>tap on required access point to connect this device for next steps</li>
+        <!--<li>press "Retrieve networks" button (do not refresh the page, you are not connected to the Internet!)</li>-->
+      </ul>
+      <br/>
+
+      <h6 *ngIf="!hotspotListZen.length">Scanning...</h6>
+
+      <ion-list>
+        <ion-item-sliding *ngFor="let item of hotspotListZen">
+          <ion-item>
+            <button ion-item (click)="itemSelected(item, 'zen')" class="truncated">
+              {{ item.SSID }}
+              <ion-icon class="list-icon-absolute" name="arrow-forward"></ion-icon>
+            </button>
+          </ion-item>
+        </ion-item-sliding>
+      </ion-list>
+
+    </div>
+
+    <div *ngIf="step === 4" class="clear-container">
+
+      <input-select
+        *ngFor="let field of connectNetworkInputs"
+        [itemDisabled]="field.disabled"
+        [itemValue]="data.network[field.modelName]"
+        [itemLabel]="field.placeholder"
+        [itemType]="field.type"
+        [itemOptions]="field.options ? field.options : []"
+        [itemError]="''"
+        (itemChange)="data.network[field.modelName] = $event"
+      ></input-select>
+
+    </div>
+
+    <div *ngIf="step === 5" class="create-account row center-xs middle-xs">
+      <div class="create-account-form col-xs-6">
+        <div class="info-container">
+          <div class="plain-text">
+            Device attached successfully
+          </div>
+          <ion-icon class="btn-ion-icon ion-icon-huge" name="checkmark-circle-outline" (tap)="goToGroup(activeGroup)"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions col-xs-12">
+      <button
+        *ngIf="step === 1"
+        type="button"
+        class="btn-rect shadow"
+        (tap)="provision(data)"
+        [disabled]="!data.device.title || (data.device.title.length && data.device.title.length > 10)"
+      >
+        Provision
+      </button>
+      <button
+        *ngIf="false"
+        type="button"
+        class="btn-rect shadow"
+        (tap)="retrieveNetworksZen()"
+      >
+        Retrieve networks
+      </button>
+      <button
+        *ngIf="step === 4"
+        type="button"
+        class="btn-rect shadow"
+        (tap)="connectThermostat(data)"
+        [disabled]="!data.network.ssid"
+      >
+        Connect Thermostat
+      </button>
+      <button
+        *ngIf="step === 5"
+        type="button"
+        class="btn-rect shadow"
+        (tap)="addAnother()"
+      >
+        Add Another
+      </button>
+
+    </div>
+  </div>
+</ion-content>

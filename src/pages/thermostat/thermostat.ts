@@ -4,23 +4,39 @@ import {AlertController, NavController, NavParams} from 'ionic-angular';
 import * as _ from 'lodash';
 
 import { T_INPUT_SELECT_PROPS } from '../../app/types';
-import { GroupingComponent, ThermostatComponent } from '../index';
-import { GroupingService, UtilService } from '../../services/index';
+import { GroupingComponent } from '../index';
+import { GroupingService, HotspotService, UtilService } from '../../services/index';
 import {
   TIMEZONES_LIST,
   ZENHQ_LOGO_TRANSPARENT
 } from '../../app/constants';
 
 @Component({
-  selector: 'group-create',
-  templateUrl: 'group-create.html'
+  selector: 'thermostat',
+  templateUrl: 'thermostat.html'
 })
-export class GroupCreateComponent {
+export class ThermostatComponent {
 
   public logoTransparent: string = ZENHQ_LOGO_TRANSPARENT;
 
+  public data: any = {
+    group: {},
+    device: {
+      title: '',
+      location: ''
+    },
+    network: {
+      ssid: '',
+      password: ''
+    }
+  };
   public activeGroup: any = {};
+  public provisioning: string = '';
+  public provisionDetails: any = {};
+  public step: number = 0;
   public newGroup: any = {};
+  public hotspotList: any[] = [];
+  public hotspotListZen: any[] = [];
   public groupCreate: any = {
     formValid: false,
     title: 'Default Create Group title'
@@ -31,11 +47,28 @@ export class GroupCreateComponent {
     { modelName: 'address', placeholder: 'Address', type: 'text', required: false }
   ];
 
+  public provisionInputs: any[] = [
+    { modelName: 'title', placeholder: 'Device Name', type: 'text', required: true }
+    // { modelName: 'location', placeholder: 'Device Location', type: 'text', required: true }
+  ];
+
+  public connectNetworkInputs: any[] = [
+    { modelName: 'ssid', placeholder: 'Select Network', type: 'select', required: true, options: [] },
+    { modelName: 'password', placeholder: 'Password', type: 'text', required: true },
+  ];
+
+  public thermostatBtns: any[] = [
+    { title: 'Zen Zigbee', type: 'zenZigbee' },
+    { title: 'Zen WIFI', type: 'zenWifi' },
+    { title: 'Load Controller', type: 'loadController' }
+  ];
+
   public dependencies: any = {};
 
   constructor(
     // public menu: MenuController,
     public _grouping: GroupingService,
+    public _hotspot: HotspotService,
     public _util: UtilService,
     public alertCtrl: AlertController,
     public navCtrl: NavController,
@@ -46,57 +79,183 @@ export class GroupCreateComponent {
 
   public ionViewDidLoad() {
     this.dependencies = this.navParams.get('dependencies') || {};
-    console.log('group-create ionViewDidLoad this.dependencies: ', this.dependencies);
     if (_.hasIn(this.dependencies, 'activeGroup.id')) {
-      if (this.dependencies.edit) {
-        this.prepareGroupCreation(this.dependencies.activeGroup);
-      } else {
-        this.prepareGroupCreation(this.dependencies.activeGroup);
-      }
+      this.activeGroup = this.dependencies.activeGroup;
+      this.getParentFor(this.dependencies.activeGroup);
     } else {
       this.dependencies = {};
       this.openPage(GroupingComponent);
-      alert('Error. Group not found!');
+      // alert('Error. Group not found!');
     }
+  }
+
+  /**
+   * Add thermostat action
+   * @param {string} type
+   */
+  public addThermostat(type: string): void {
+    switch (type) {
+      case 'zenZigbee':
+        break;
+      case 'zenWifi':
+        this.provisioning = type;
+        // this.scanWifi();
+        this.step = 1;
+        break;
+      case 'loadController':
+        break;
+      default:
+        console.log('addThermostat type is unrecognized:', type);
+        break;
+    }
+  }
+
+  /**
+   * Connect thermostat to chosen network
+   * @param data
+   */
+  public connectThermostat(data: any) {
+    this._grouping.setConfiguration(data).subscribe(
+      (resp: any) => {
+        console.log('connectThermostat success resp: ', resp);
+        this.step = 5;
+      },
+      (err: any) => {
+        alert(JSON.stringify(err, null, 2));
+      }
+    );
+  }
+
+  /**
+   * Scan WiFi networks
+   */
+  public scanWifi(type?: string) {
+    this._hotspot.scanNetworks(
+      (resp: any) => {
+        if (type === 'zen') {
+          this.hotspotList = [];
+          this.hotspotListZen = _.filter(resp, (item: any) => item.SSID.toLowerCase().indexOf('zen') !== -1);
+        } else {
+          this.hotspotListZen = [];
+          this.hotspotList = resp;
+          this.connectNetworkInputs[0].options = resp.map((item: any) => {
+            return {
+              value: item.SSID,
+              viewValue: item.SSID
+            };
+          });
+        }
+        console.log('_hotspot.scanNetworks resp: ', JSON.stringify(resp, null, 2));
+      },
+      (err: any) => {
+        console.log('_hotspot.scanNetworks err: ', JSON.stringify(err, null, 2));
+      },
+    );
+  }
+
+  /**
+   * Item selected action
+   * @param spot
+   * @param type
+   */
+  public itemSelected(spot: any, type?: string) {
+    if (type === 'zen') {
+      const cred: any = {
+        ssid: spot.SSID,
+        password: ''
+      };
+      this._hotspot.connectToWifi(
+        cred,
+        (done: any) => {
+          console.log('connectToWifi done: ', done);
+          this.step = 4;
+          this.retrieveNetworksAll();
+        },
+        (err: any) => {
+          alert(JSON.stringify(err, null, 2))
+        }
+      );
+    }
+    console.log('itemSelected spot: ', JSON.stringify(spot, null, 2));
   }
 
   public save(group: any): void {
-    if (this.dependencies.edit) {
+    console.log('save override group: ', group);
+  }
 
-      console.log('update group: ', group);
-      this._grouping.updateGroup(group).subscribe(
+  public provision(data: any) {
+    if (data && data.device && data.device.title) {
+      this._grouping.provision(data.group.id, data.device).subscribe(
         (resp: any) => {
-          console.log('resp: ', resp);
-          // this.activeGroup = resp.data;
-          this.goToGrouping(this.activeGroup);
+          if (resp && resp.data && resp.data.sasToken) {
+            this.provisionDetails = resp.data;
+
+            this.data.device.deviceId = resp.data.deviceId;
+            this.data.device.deviceSecondaryId = resp.data.deviceSecondaryId;
+            this.data.device.sasToken = resp.data.sasToken;
+            this.data.device.iotHubHostname = resp.data.iotHubHostname;
+            this.data.device.iotHubPort = '8883';
+
+            this.step = 2;
+
+            this.retrieveNetworksZen();
+          } else {
+            alert('Error, sasToken not found in response: ' + JSON.stringify(resp, null, 2));
+          }
         },
         (err: any) => {
-          console.log('err: ', err);
-        }
-      );
-    } else {
-      console.log('create group: ', group);
-      this._grouping.createGroup(group).subscribe(
-        (resp: any) => {
-          console.log('resp: ', resp);
-          // this.activeGroup = resp.data;
-          this.goToGrouping(this.activeGroup);
-        },
-        (err: any) => {
-          console.log('err: ', err);
+          alert(JSON.stringify(err, null, 2));
         }
       );
     }
   }
 
-  public goToGrouping(group: any) {
-    this.dependencies.activeGroup = _.clone(group);
-    this.openPage(GroupingComponent);
+  /**
+   * Get parent group for group
+   * @param group
+   */
+  public getParentFor(group: any) {
+    this._grouping.getGroup(group.parentId).subscribe(
+      (resp: any) => {
+        if (resp && resp.data) {
+          this.data.group = resp.data;
+        }
+      },
+      (err: any) => {
+        alert(JSON.stringify(err, null, 2));
+      }
+    );
   }
 
-  public goToThermostat(group: any) {
+  public retrieveNetworksZen() {
+    this.step = 2;
+    this.scanWifi('zen');
+
+    let scanWifiInterval: any = setInterval(() => {
+      if (this.step === 2) {
+        this.scanWifi('zen');
+      } else {
+        clearInterval(scanWifiInterval);
+      }
+    }, 5000);
+  }
+
+  public retrieveNetworksAll() {
+    this.scanWifi();
+
+    let scanWifiInterval: any = setInterval(() => {
+      if (this.step === 4) {
+        this.scanWifi();
+      } else {
+        clearInterval(scanWifiInterval);
+      }
+    }, 5000);
+  }
+
+  public goToGroup(group: any) {
     this.dependencies.activeGroup = _.clone(group);
-    this.openPage(ThermostatComponent);
+    this.dependencies.edit = false;
+    this.openPage(GroupingComponent);
   }
 
   public openPage(page: any) {
@@ -145,11 +304,9 @@ export class GroupCreateComponent {
         this.newGroup.address = this.newGroup.location.address;
       }
     }
-    console.log('this.createGroupInputs: ', this.createGroupInputs);
   }
 
   public applyAddressTo(group: any, prediction: any) {
-    console.log('applyAddressTo group: ', group, ' prediction: ', prediction);
     if (prediction && prediction.formatted_address) {
       group.location = {};
       group.location.address = prediction.formatted_address;
@@ -178,12 +335,30 @@ export class GroupCreateComponent {
         group.location.lng = prediction.geometry.location.lng;
       }
     }
-    console.log('applyAddressTo DONE: ', this.newGroup);
     this.onChangeValidate();
   }
 
   public createGroup(item: any) {
     console.log('createGroup item: ', item);
+  }
+
+  public addAnother() {
+    this.provisioning = '';
+    this.step = 0;
+    this.hotspotList = [];
+    this.hotspotListZen = [];
+    this.data = {
+      group: {},
+      device: {
+        title: '',
+        location: ''
+      },
+      network: {
+        ssid: '',
+        password: ''
+      }
+    };
+    this.getParentFor(this.dependencies.activeGroup);
   }
 
   // public requestRemove(item: any) {
@@ -242,7 +417,6 @@ export class GroupCreateComponent {
     }
     _.forEach(this.createGroupInputs, (item: any) => {
       let err = this._util.validateItem(item, this.newGroup[item.modelName]);
-      console.log('err: ', err);
       if (err) {
         isValid = false;
       }
@@ -255,6 +429,6 @@ export class GroupCreateComponent {
       // }
     });
     this.groupCreate.formValid = isValid;
-    console.log('onChangeValidate isValid: ', isValid, ' this.newGroup: ', this.newGroup);
   }
+
 }

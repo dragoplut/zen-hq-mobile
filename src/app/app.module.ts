@@ -7,6 +7,7 @@ import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { GoogleMaps } from '@ionic-native/google-maps';
+import { Hotspot } from '@ionic-native/hotspot';
 
 import { MomentModule } from 'angular2-moment';
 
@@ -21,6 +22,7 @@ import {
 } from '../components/index';
 import {
   SigninComponent,
+  ThermostatComponent,
   OverrideComponent,
   ForgottenPasswordComponent,
   GroupCreateComponent,
@@ -32,6 +34,7 @@ import {
   AccountService,
   GoogleService,
   GroupingService,
+  HotspotService,
   PermissionService,
   UtilService
 } from '../services/index';
@@ -60,6 +63,7 @@ export class RavenErrorHandler implements ErrorHandler {
     GroupingComponent,
     OverrideComponent,
     SigninComponent,
+    ThermostatComponent,
     MyApp
   ],
   imports: [
@@ -80,10 +84,12 @@ export class RavenErrorHandler implements ErrorHandler {
     GroupingComponent,
     OverrideComponent,
     SigninComponent,
+    ThermostatComponent,
     MyApp
   ],
   providers: [
     GoogleMaps,
+    Hotspot,
     StatusBar,
     SplashScreen,
     ApiService,
@@ -91,6 +97,7 @@ export class RavenErrorHandler implements ErrorHandler {
     AccountService,
     GoogleService,
     GroupingService,
+    HotspotService,
     PermissionService,
     UtilService,
     { provide: ErrorHandler, useClass: RavenErrorHandler }
