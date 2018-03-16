@@ -1,9 +1,17 @@
+<label
+  #searchBarLabel
+  for="googleAutoCompleteSearch{{placeholder.split(' ').join('')}}"
+  class="custom-input-label {{addressValue && addressValue.length ? 'input-not-empty' : ''}} {{searchBarLabel.isActive ? 'input-active' : ''}}"
+>{{placeholder}}</label>
 <ion-searchbar
+  id="googleAutoCompleteSearch{{placeholder.split(' ').join('')}}"
   [(ngModel)]="addressValue"
+  (ionFocus)="searchBarLabel.isActive=true"
+  (ionBlur)="searchBarLabel.isActive=false"
   (change)="valueChanged(addressValue)"
   (ionInput)="getLocals($event)"
   debounce="700"
-  placeholder="{{placeholder}}"
+  placeholder=""
 ></ion-searchbar>
 <ion-list>
   <ion-item

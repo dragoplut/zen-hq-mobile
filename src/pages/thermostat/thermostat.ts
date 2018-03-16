@@ -94,6 +94,7 @@ export class ThermostatComponent {
    * @param {string} type
    */
   public addThermostat(type: string): void {
+    console.log('addThermostat type: ', type);
     switch (type) {
       case 'zenZigbee':
         break;

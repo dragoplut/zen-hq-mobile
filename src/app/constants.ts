@@ -1,5 +1,5 @@
 // TODO: Get app version value dynamically from config
-export const APP_VERSION: string = 'v1.0.4';
+export const APP_VERSION: string = 'v1.0.5';
 
 // tslint:disable-next-line
 export const EMAIL_REGEXP: any = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

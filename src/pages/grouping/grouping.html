@@ -1,6 +1,6 @@
 <ion-header class="my-clinic-page">
   <ion-navbar class="custom-header">
-    <ion-icon *ngIf="activeGroup && activeGroup.level" class="header-action-icon pull-left" name="arrow-back" (tap)="getPrevGroup(activeGroup)"></ion-icon>
+    <ion-icon *ngIf="activeGroup && activeGroup.level" class="header-action-icon pull-left" name="arrow-back" tapable (click)="getPrevGroup(activeGroup)"></ion-icon>
     <ion-searchbar
       placeholder="Search"
       [ngClass]="activeGroup && activeGroup.level ? 'ion-searchbar-small' : ''"
@@ -9,7 +9,7 @@
       (ionInput)="onInput($event)"
       (ionCancel)="onCancel($event)">
     </ion-searchbar>
-    <!--<ion-icon class="header-action-icon pull-right bold-ios" name="add" (tap)="doSomething()"></ion-icon>-->
+    <!--<ion-icon class="header-action-icon pull-right bold-ios" name="add" tapable (click)="doSomething()"></ion-icon>-->
   </ion-navbar>
 </ion-header>
 <ion-content class="my-clinic-page">
@@ -72,21 +72,21 @@
         type="button"
         class="btn-round float-left shadow"
       >
-        <ion-icon class="btn-ion-icon" name="calendar" (tap)="override(activeGroup)"></ion-icon>
-        <ion-icon class="btn-ion-icon icon-absolute-right" name="time" (tap)="override(activeGroup)"></ion-icon>
+        <ion-icon class="btn-ion-icon" name="calendar" tapable (click)="override(activeGroup)"></ion-icon>
+        <ion-icon class="btn-ion-icon icon-absolute-right" name="time" tapable (click)="override(activeGroup)"></ion-icon>
       </button>
       <button
         *ngIf="activeGroup.level > 0"
         type="button"
         class="btn-round center-absolute shadow"
       >
-        <ion-icon class="btn-ion-icon" name="create" (tap)="groupEdit(activeGroup)"></ion-icon>
+        <ion-icon class="btn-ion-icon" name="create" tapable (click)="groupEdit(activeGroup)"></ion-icon>
       </button>
       <button
         type="button"
         class="btn-round float-right shadow"
       >
-        <ion-icon class="btn-ion-icon" name="add" (tap)="groupCreateFor(activeGroup)"></ion-icon>
+        <ion-icon class="btn-ion-icon" name="add" tapable (click)="groupCreateFor(activeGroup)"></ion-icon>
       </button>
     </div>
   </div>

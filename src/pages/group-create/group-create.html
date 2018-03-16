@@ -1,6 +1,6 @@
 <ion-header class="my-clinic-page group-create-page">
   <ion-navbar class="custom-header">
-    <ion-icon class="header-action-icon pull-left" name="arrow-back" (tap)="goToGrouping(activeGroup)"></ion-icon>
+    <ion-icon class="header-action-icon pull-left" name="arrow-back" tapable (click)="goToGrouping(activeGroup)"></ion-icon>
     <ion-title>ZEN HQ</ion-title>
   </ion-navbar>
 </ion-header>
@@ -31,7 +31,7 @@
         <!--type="button"-->
         <!--class="btn-round float-left shadow"-->
       <!--&gt;-->
-        <!--<ion-icon class="btn-ion-icon" name="add" (tap)="goToThermostat(activeGroup)"></ion-icon>-->
+        <!--<ion-icon class="btn-ion-icon" name="add" tapable (click)="goToThermostat(activeGroup)"></ion-icon>-->
         <!--<span class="btn-title-absolute">Add hub</span>-->
       <!--</button>-->
     <!--</div>-->
@@ -42,7 +42,7 @@
         class="btn-rect"
         [disabled]="!groupCreate.formValid"
         [ngClass]="!groupCreate.formValid ? 'disabled' : ''"
-        (tap)="groupCreate.formValid ? save(newGroup) : false"
+        tapable (click)="groupCreate.formValid ? save(newGroup) : false"
       >
         Save
       </button>

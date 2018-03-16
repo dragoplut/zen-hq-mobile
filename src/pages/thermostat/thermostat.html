@@ -2,7 +2,7 @@
   <ion-navbar class="custom-header">
     <ion-icon
       class="header-action-icon pull-left"
-      name="arrow-back" (tap)="step && step < 5 ? step = step - 1 : goToGroup(activeGroup)"
+      name="arrow-back" tapable (click)="step && step < 5 ? step = step - 1 : goToGroup(activeGroup)"
     ></ion-icon>
     <ion-title>ZEN HQ</ion-title>
   </ion-navbar>
@@ -20,7 +20,7 @@
         [disabled]="item.type !== 'zenWifi'"
         type="button"
         class="btn-rect shadow"
-        (tap)="addThermostat(item.type)"
+        tapable (click)="addThermostat(item.type)"
       >
         {{item.title}}
       </button>
@@ -85,7 +85,7 @@
           <div class="plain-text">
             Device attached successfully
           </div>
-          <ion-icon class="btn-ion-icon ion-icon-huge" name="checkmark-circle-outline" (tap)="goToGroup(activeGroup)"></ion-icon>
+          <ion-icon class="btn-ion-icon ion-icon-huge" name="checkmark-circle-outline" tapable (click)="goToGroup(activeGroup)"></ion-icon>
         </div>
       </div>
     </div>
@@ -95,7 +95,7 @@
         *ngIf="step === 1"
         type="button"
         class="btn-rect shadow"
-        (tap)="provision(data)"
+        tapable (click)="provision(data)"
         [disabled]="!data.device.title || (data.device.title.length && data.device.title.length > 10)"
       >
         Provision
@@ -104,7 +104,7 @@
         *ngIf="false"
         type="button"
         class="btn-rect shadow"
-        (tap)="retrieveNetworksZen()"
+        tapable (click)="retrieveNetworksZen()"
       >
         Retrieve networks
       </button>
@@ -112,7 +112,7 @@
         *ngIf="step === 4"
         type="button"
         class="btn-rect shadow"
-        (tap)="connectThermostat(data)"
+        tapable (click)="connectThermostat(data)"
         [disabled]="!data.network.ssid"
       >
         Connect Thermostat
@@ -121,7 +121,7 @@
         *ngIf="step === 5"
         type="button"
         class="btn-rect shadow"
-        (tap)="addAnother()"
+        tapable (click)="addAnother()"
       >
         Add Another
       </button>

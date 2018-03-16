@@ -485,7 +485,7 @@ forgotten-password .info-container {
   text-align: left;
   width: 76%;
   input, ion-searchbar.searchbar-md, ion-searchbar .searchbar-input {
-    background-color: transparent;
+    background-color: transparent !important;
     box-sizing: border-box;
     border: none;
     border-bottom: 1px solid $col-neutral-placeholder;
@@ -499,6 +499,12 @@ forgotten-password .info-container {
     outline: none;
     height: 36px;
     width: 100%;
+    input {
+      padding-top: 5px !important;
+    }
+    input:focus {
+      padding-right: 22px !important;
+    }
   }
   ion-searchbar .searchbar-input {
     color: $col-neutral-text !important;
@@ -805,7 +811,7 @@ forgotten-password .info-container {
   display: inline-block;
   float: left;
   position: relative;
-  margin-left: 16.3%;
+  margin-left: 0;
 }
 .link {
   color: $col-primary-white;
