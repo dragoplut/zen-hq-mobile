@@ -1,29 +1,85 @@
-<ion-header class="my-clinic-page group-create-page">
+<ion-header class="my-clinic-page override-page">
   <ion-navbar class="custom-header">
-    <ion-icon class="header-action-icon pull-left" name="arrow-back" tapable (click)="goToGrouping(activeGroup)" (click)="goToGrouping(activeGroup)"></ion-icon>
+    <ion-icon class="header-action-icon pull-left" name="arrow-back" tapable (click)="goToGrouping(activeGroup)"></ion-icon>
     <ion-title>ZEN HQ</ion-title>
+    <ion-spinner *ngIf="loading" class="spinner-right-absolute-head"></ion-spinner>
   </ion-navbar>
 </ion-header>
-<ion-content class="my-clinic-page group-create-page">
+<ion-content class="my-clinic-page override-page">
   <div class="content-title">
     <ion-title class="truncated">{{activeGroup.title}}</ion-title>
   </div>
-  <div class="page-content">
+  <div class="page-content" *ngIf="!event.created">
 
     <div class="clear-container">
-      Some content will be here...
+      <div class="content-one-third">
+        <button
+          type="button"
+          class="btn-round btn-dark-icon float-none"
+          tapable (click)="changeSetpoint('up')"
+          [disabled]="!options.action.up"
+        >
+          <ion-icon class="btn-ion-icon" name="add"></ion-icon>
+        </button>
+        <h3 class="event-setpoint">{{ setpointCalculated(event.setpoint) }}</h3>
+        <button
+          type="button"
+          class="btn-round btn-dark-icon float-none"
+          tapable (click)="changeSetpoint('down')"
+          [disabled]="!options.action.down"
+        >
+          <ion-icon class="btn-ion-icon" name="remove"></ion-icon>
+        </button>
+      </div>
+      <div class="content-one-third">
+        <img
+          class="ion-item-content-icon"
+          src="{{modeImgChunk + 'heat' + (event.mode === 'heat' ? '-on' : '')}}.svg"
+          alt="heat"
+          [ngClass]="{ 'shadow': event.mode === 'heat' }"
+          tapable (click)="event.mode = 'heat'"
+        >
+        <img
+          class="ion-item-content-icon"
+          src="{{modeImgChunk + 'cool' + (event.mode === 'cool' ? '-on' : '')}}.svg"
+          [ngClass]="{ 'shadow': event.mode === 'cool' }"
+          alt="cool"
+          tapable (click)="event.mode = 'cool'"
+        >
+      </div>
+      <div class="content-one-third">
+        <input-select
+          *ngFor="let field of timeDurationSelects"
+          [itemDisabled]="field.disabled || (field.modelName === 'duration' && event.durationType !== 'time')"
+          [itemValue]="event[field.modelName]"
+          [itemLabel]="field.placeholder"
+          [itemType]="field.type"
+          [itemOptions]="field.options ? field.options : []"
+          [itemError]="''"
+          (itemChange)="event[field.modelName] = $event"
+        ></input-select>
+      </div>
     </div>
 
     <div class="actions col-xs-12">
       <button
         type="button"
         class="btn-rect"
-        [disabled]="!groupCreate.formValid"
-        [ngClass]="!groupCreate.formValid ? 'disabled' : ''"
-        tapable (click)="groupCreate.formValid ? save(newGroup) : false"
+        [disabled]="false"
+        [ngClass]="loading ? 'disabled' : ''"
+        tapable (click)="!loading ? save(event) : false"
       >
         Apply Override
       </button>
+    </div>
+  </div>
+
+  <div class="page-content" *ngIf="event.created">
+    <div class="info-container">
+      <div class="plain-text">
+        Override successfully applied
+      </div>
+      <ion-icon class="btn-ion-icon ion-icon-huge" name="checkmark-circle-outline" tapable (click)="goToGrouping(activeGroup)"></ion-icon>
     </div>
   </div>
 </ion-content>

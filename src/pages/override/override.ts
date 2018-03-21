@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
-import {AlertController, NavController, NavParams} from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
+import { WheelSelector } from '@ionic-native/wheel-selector';
 // noinspection TypeScriptCheckImport
 import * as _ from 'lodash';
 
-import { T_INPUT_SELECT_PROPS } from '../../app/types';
 import { GroupingComponent } from '../index';
-import { GroupingService, UtilService } from '../../services/index';
-import {
-  TIMEZONES_LIST,
-  ZENHQ_LOGO_TRANSPARENT
-} from '../../app/constants';
+import { GroupingService, UtilService } from '../../services/';
+import { MODE_IMG_CHUNK } from "../../app/constants";
 
 @Component({
   selector: 'override',
@@ -17,41 +14,70 @@ import {
 })
 export class OverrideComponent {
 
-  public logoTransparent: string = ZENHQ_LOGO_TRANSPARENT;
+  public modeImgChunk: string = MODE_IMG_CHUNK;
 
   public activeGroup: any = {};
-  public newGroup: any = {};
-  public groupCreate: any = {
-    formValid: false,
-    title: 'Default Create Group title'
+  public dependencies: any = {};
+  public events: any = [];
+  public loading: boolean = false;
+  public event: any = {
+    created: false,
+    durationType: 'time',
+    duration: '1',
+    mode: 'cool',
+    setpoint: 72,
+    type: 'temporary-override'
+  };
+  public options: any = {
+    action: {
+      down: true,
+      up: true
+    },
+    durations: [],
+    durationTypeSelector: [
+      { value: 'time', viewValue: 'Time' },
+      { value: 'until', viewValue: 'Until' }
+    ],
+    selectorItems: [
+      'duration',
+      'setpoint'
+    ],
+    setpoints: [],
+    duration: {
+      max: 24,
+      min: 1
+    },
+    setpoint: {
+      max: 90,
+      min: 40
+    }
   };
 
-  public createGroupInputs: T_INPUT_SELECT_PROPS[] = [
-    { modelName: 'title', placeholder: 'Name', type: 'text', required: true },
-    { modelName: 'address', placeholder: 'Address', type: 'text', required: false }
+  public timeDurationSelects: any[] = [
+    { modelName: 'duration', placeholder: 'Duration (hours)', type: 'select', required: false, options: this.options.durations },
+    { modelName: 'durationType', placeholder: 'Duration Type', type: 'select', required: false, options: this.options.durationTypeSelector }
   ];
 
-  public dependencies: any = {};
-
   constructor(
-    // public menu: MenuController,
-    public _grouping: GroupingService,
     public _util: UtilService,
-    public alertCtrl: AlertController,
+    public _grouping: GroupingService,
     public navCtrl: NavController,
-    public navParams: NavParams
-  ) {
-    // this.menu.enable(true, 'appMenu');
-  }
+    public navParams: NavParams,
+    public platform: Platform,
+    public selector: WheelSelector
+  ) { }
 
   public ionViewDidLoad() {
     this.dependencies = this.navParams.get('dependencies') || {};
-    if (_.hasIn(this.dependencies, 'activeGroup.id')) {
-      if (this.dependencies.edit) {
-        this.prepareGroupCreation(this.dependencies.activeGroup);
-      } else {
-        this.prepareGroupCreation(this.dependencies.activeGroup);
-      }
+    if (this.dependencies && this.dependencies.activeGroup && this.dependencies.activeGroup.id) {
+      this.generateSelectorItems();
+      this.activeGroup = this.dependencies.activeGroup;
+      this.timeDurationSelects = [
+        { modelName: 'duration', placeholder: 'Duration (hours)', type: 'select', required: false, options: this.options.durations },
+        { modelName: 'durationType', placeholder: 'Duration Type', type: 'select', required: false, options: this.options.durationTypeSelector }
+      ];
+      this.getGroupEvents(this.activeGroup.id);
+      console.log('ionViewDidLoad this.dependencies: ', this.dependencies);
     } else {
       this.dependencies = {};
       this.openPage(GroupingComponent);
@@ -59,8 +85,63 @@ export class OverrideComponent {
     }
   }
 
-  public save(group: any): void {
-    console.log('save override group: ', group);
+  public setpointCalculated(value: number) {
+    return value;
+  }
+
+  public changeSetpoint(direction: string) {
+    switch (direction) {
+      case 'down':
+        if (this.event.setpoint > this.options.setpoint.min) {
+          this.event.setpoint--;
+        }
+        break;
+      case 'up':
+        if (this.event.setpoint < this.options.setpoint.max) {
+          this.event.setpoint++;
+        }
+        break;
+      default:
+        break;
+    }
+    this.options.action.down = this.event.setpoint > this.options.setpoint.min;
+    this.options.action.up = this.event.setpoint < this.options.setpoint.max;
+  }
+
+  public save(data: any) {
+    console.log('save temporary-override event: ', data);
+    this.loading = true;
+    const activeTimezone: number = this.activeGroup.utcOffset * 60 * 1000;
+    this.activeGroup.events = this.events;
+    let event: any = this._util.viewEventToEvent(data, this.activeGroup, activeTimezone);
+    event.mode = this.toFirstUpper(event.mode);
+    console.log('activeTimezone: ', activeTimezone);
+    console.log('event: ', event);
+    this._grouping.createEvent(event, this.activeGroup.id).subscribe(
+      (resp: any) => {
+        this.loading = false;
+        this.event.created = true;
+        console.log('resp: ', resp);
+      },
+      (err: any) => {
+        this.loading = false;
+        alert(JSON.stringify(err, null, 2));
+      }
+    );
+  }
+
+  public getGroupEvents(id: string) {
+    this.loading = true;
+    this._grouping.getGroupEvents(id).subscribe(
+      (resp: any) => {
+        this.loading = false;
+        this.events = resp.data;
+      },
+      (err: any) => {
+        this.loading = false;
+        alert(JSON.stringify(err, null, 2));
+      }
+    );
   }
 
   public goToGrouping(group: any) {
@@ -72,158 +153,45 @@ export class OverrideComponent {
     this.navCtrl.push(page, { dependencies: this.dependencies });
   }
 
-  public prepareGroupCreation(group: any) {
-    this.activeGroup = _.clone(group);
-    const titleAction: string = this.dependencies.edit ? 'Edit' : 'Create';
-    switch (this.activeGroup.level - (this.dependencies.edit ? 1 : 0)) {
-      case 0:
-        this.groupCreate.title = `${titleAction} Organization`;
-        this.createGroupInputs = [
-          { modelName: 'title', placeholder: 'Organization Name', type: 'text', required: true }
-        ];
-        break;
-      case 1:
-        this.groupCreate.title = `${titleAction} Region`;
-        this.createGroupInputs = [
-          { modelName: 'title', placeholder: 'Region Name', type: 'text', required: true }
-        ];
-        break;
-      case 2:
-        this.groupCreate.title = `${titleAction} Site`;
-        this.createGroupInputs = [
-          { modelName: 'title', placeholder: 'Site Name', type: 'text', required: true },
-          { modelName: 'address', placeholder: 'Site Address', type: 'google-autocomplete', required: true },
-          { modelName: 'utcOffset', placeholder: 'Site Timezone', type: 'select', required: true, options: TIMEZONES_LIST }
-        ];
-        break;
-      case 3:
-        this.groupCreate.title = `${titleAction} Group`;
-        this.createGroupInputs = [
-          { modelName: 'title', placeholder: 'Group Name', type: 'text', required: true }
-        ];
-        break;
-      default:
-        this.groupCreate.title = `${titleAction} Group`;
-        this.createGroupInputs = [];
-        break;
-    }
-    this.newGroup.parentId = this.activeGroup.id;
-    if (this.dependencies.edit) {
-      this.newGroup = _.clone(group);
-      if (this.newGroup && this.newGroup.location) {
-        this.newGroup.address = this.newGroup.location.address;
+  public showWeelSelector(name: string) {
+    this.platform.ready().then(() => {
+      if (this.options[name + 'Selector']) {
+        this.selector.show(this.options[name + 'Selector']).then(
+          (result: any) => {
+            if (result && result.length) {
+              this.event[name] = result[0].value;
+            }
+            console.log('showWeelSelector result: ', result);
+            console.log('showWeelSelector this.event: ', this.event);
+          },
+          (err: any) => {
+            console.log('showWeelSelector err: ', err);
+          }
+        )
       }
-    }
-    console.log('this.createGroupInputs: ', this.createGroupInputs);
-  }
-
-  public applyAddressTo(group: any, prediction: any) {
-    console.log('applyAddressTo group: ', group, ' prediction: ', prediction);
-    if (prediction && prediction.formatted_address) {
-      group.location = {};
-      group.location.address = prediction.formatted_address;
-      group.location.utc_offset = parseInt(prediction.utc_offset, 10);
-      group.utcOffset = parseInt(prediction.utc_offset, 10);
-      prediction.address_components.forEach((el: any) => {
-        switch (el.types[0]) {
-          case 'country':
-            group.location.country = el.long_name;
-            break;
-          case 'administrative_area_level_1':
-            group.location.state = el.long_name;
-            break;
-          case 'locality':
-            group.location.city = el.short_name;
-            break;
-          case 'postal_code':
-            group.location.zip = el.long_name;
-            break;
-          default:
-            break;
-        }
-      });
-      if (prediction.geometry && prediction.geometry.location && prediction.geometry.location.lat) {
-        group.location.lat = prediction.geometry.location.lat;
-        group.location.lng = prediction.geometry.location.lng;
-      }
-    }
-    console.log('applyAddressTo DONE: ', this.newGroup);
-    this.onChangeValidate();
-  }
-
-  public createGroup(item: any) {
-    console.log('createGroup item: ', item);
-  }
-
-  // public requestRemove(item: any) {
-  //   const options: any = {
-  //     title: 'Confirm',
-  //     message: `Do you really want to remove Clinic ${item.name}, ${item.address}?`
-  //   };
-  //   this.showConfirm(options, 'delete', item);
-  // }
-
-  // public showConfirm(options: any, action: string, item?: any) {
-  //   let alert: any = this.alertCtrl.create({
-  //     title: options.title,
-  //     message: options.message,
-  //     buttons: [
-  //       {
-  //         text: 'No',
-  //         role: 'cancel',
-  //         handler: () => {
-  //           console.log('Cancel clicked');
-  //         }
-  //       },
-  //       {
-  //         text: 'Yes',
-  //         handler: () => {
-  //           this.doConfirmed(action, item);
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   alert.present();
-  // }
-
-  // public doConfirmed(action: string, item?: any) {
-  //   switch (action) {
-  //     case 'delete':
-  //       // this.removeItem(item);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
-
-  /**
-   * Validate form
-   */
-  public onChangeValidate() {
-    let isValid = true;
-    if (this.activeGroup.level - (this.dependencies.edit ? 1 : 0) === 2) {
-      isValid = this.newGroup
-        && this.newGroup.location
-        && this.newGroup.location.address
-        && this.newGroup.location.lat
-        && this.newGroup.location.lng
-        && typeof this.newGroup.utcOffset === 'number';
-    }
-    _.forEach(this.createGroupInputs, (item: any) => {
-      let err = this._util.validateItem(item, this.newGroup[item.modelName]);
-      console.log('err: ', err);
-      if (err) {
-        isValid = false;
-      }
-      // } else if (item.required) {
-      //   if ((!this.newGroup[item.modelName] ||
-      //     !this.newGroup[item.modelName].length ||
-      //     this.newGroup[item.modelName].length < 2)) {
-      //     isValid = false;
-      //   }
-      // }
     });
-    this.groupCreate.formValid = isValid;
-    console.log('onChangeValidate isValid: ', isValid, ' this.newGroup: ', this.newGroup);
+  }
+
+  public generateSelectorItems() {
+    for (let item of this.options.selectorItems) {
+      if (this.options && this.options[item]) {
+        this.options[item + 's'] = [];
+        for (let o = this.options[item].min; o <= this.options[item].max; o++) {
+          let option: any = { value: '' + o, viewValue: typeof o === 'string' ? this.toFirstUpper(o) : '' + o };
+          this.options[item + 's'].push(option);
+        }
+        this.options[item + 'Selector'] = {
+          title: this.toFirstUpper(item),
+          items: this.options[item + 's'],
+          displayKey: 'value',
+          defaultItems: this.options[item + 's'][Math.ceil(this.options[item + 's'].length / 2)]
+        };
+      }
+    }
+    console.log('generateSelectorItems this.options: ', this.options);
+  }
+
+  public toFirstUpper(text: string) {
+    return text.charAt(0).toUpperCase() + text.slice(1)
   }
 }

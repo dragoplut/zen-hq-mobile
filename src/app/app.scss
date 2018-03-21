@@ -52,6 +52,9 @@ ion-header.header-md::after {
   background-image: none !important;
   //display: none;
 }
+.hidden {
+  display: none !important;
+}
 .content-title {
   border-bottom: 1px solid #808285;
   margin: 0 auto;
@@ -76,9 +79,20 @@ ion-content {
   margin-top: 50px;
 }
 .scroll-content {
-  margin-top: 2px !important;
+  margin-top: 0 !important;
   margin-top: constant(safe-area-inset-top) !important;
   margin-top: env(safe-area-inset-top) !important;
+}
+.spinner-right-absolute, .spinner-right-absolute-head {
+  color: $col-neutral-text !important;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 50;
+}
+.spinner-right-absolute-head {
+  right: 14px;
+  top: 14px;
 }
 .ion-page > ion-content {
   position: relative !important;
@@ -134,6 +148,13 @@ ion-content {
   position: absolute !important;
   top: 0;
   left: calc(50% - 22px);
+}
+
+.full-width-text-center {
+  color: $col-neutral-text;
+  display: block;
+  text-align: center;
+  width: 100%;
 }
 
 .link-btn {
@@ -247,7 +268,8 @@ ion-content {
   padding: 0;
   position: relative;
 }
-forgotten-password .info-container {
+forgotten-password .info-container, .override-page .info-container {
+  text-align: center;
   .plain-text {
     margin: 40px auto;
   }
@@ -806,6 +828,22 @@ forgotten-password .info-container {
   background-color: transparent;
   border: 1px solid $primary-color;
   color: $primary-color;
+}
+.btn-round.btn-dark-icon {
+  background-color: transparent;
+  border: none;
+  transition: all .2s ease;
+  .btn-ion-icon {
+    color: $secondary-color;
+  }
+}
+.btn-round.btn-dark-icon.activated {
+  background-color: $primary-color;
+}
+.btn-round.btn-dark-icon:disabled {
+  .btn-ion-icon {
+    color: $primary-color;
+  }
 }
 .auth-links-container {
   display: inline-block;

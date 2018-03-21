@@ -4,8 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 // noinspection TypeScriptCheckImport
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
-import { EMAIL_REGEXP } from '../../app/constants';
+import { EMAIL_REGEXP, EVENT_TYPE, WEEKDAYS } from '../../app/constants';
 import { T_LOCATION_PARAMS, T_INPUT_SELECT_PROPS } from '../../app/types';
 
 @Injectable()
@@ -99,5 +100,135 @@ export class UtilService {
     }
 
     return errMessage;
+  }
+
+  /**
+   * Convert celsius to fahrenheit
+   * @param c
+   * @param precision
+   * @returns {any}
+   */
+  public toFahrenheit(c: any, precision?: any) {
+    precision = precision || 0;
+
+    if (isNaN(c)) return c;
+
+    let decimalResult = c * 1.8 + 32;
+
+    return parseFloat(decimalResult.toFixed(precision));
+  };
+
+  /**
+   * Convert fahrenheit to celsius
+   * @param f
+   * @returns {any}
+   */
+  public toCelsius(f: any) {
+    if (isNaN(f)) return f;
+
+    let decimalResult: any = (f - 32) / 1.8;
+    let int: number = parseInt(decimalResult);
+    let remainder: number = Math.abs(decimalResult - parseInt(decimalResult));
+
+    if (remainder >= 0 && remainder < 0.25) {
+      return int;
+    } else if (remainder >= 0.25 && remainder < 0.75) {
+      return (int >= 0) ? int + 0.5 : int - 0.5;
+    } else {
+      return (int >= 0) ? int + 1 : int - 1;
+    }
+  };
+
+  public getCurrentDayOfWeek(timezone) {
+    let day = moment
+      .utc()
+      .add(timezone, "ms")
+      .day();
+
+    return WEEKDAYS[day - 1];
+  }
+
+  public getEndTimeForTemporaryOverrideEvent(event, events, activeTimezone) {
+    let day = this.getCurrentDayOfWeek(activeTimezone);
+
+    let currentEvent = null;
+    for (let i = 0; i < events.length; i++) {
+      let holidayWeekDay = events[i].type === EVENT_TYPE.HOLIDAY ?
+        this.getCurrentDayOfWeekFromDate(events[i].eventDate) : '';
+      if ((events[i].type !== EVENT_TYPE.TEMPORARY_OVERRIDE &&
+          _.includes(events[i].days, day)) ||
+        holidayWeekDay === day) {
+
+        if (event.start > events[i].start && event.start < events[i].end) {
+          currentEvent = events[i];
+          break;
+        }
+      }
+    }
+
+    if (currentEvent !== null) {
+      console.log('currentEvent', currentEvent);
+      return currentEvent.end;
+    }
+
+    let nextEvent = null;
+    for (let i = 0; i < events.length; i++) {
+      let holidayWeekDay = events[i].type === EVENT_TYPE.HOLIDAY ?
+        this.getCurrentDayOfWeekFromDate(events[i].eventDate) : '';
+      if ((events[i].type !== EVENT_TYPE.TEMPORARY_OVERRIDE &&
+          _.includes(events[i].days, day)) ||
+        holidayWeekDay === day) {
+
+        if (event.start < events[i].start) {
+          if (nextEvent === null || events[i].start < nextEvent.start) {
+            nextEvent = events[i];
+          }
+        }
+      }
+    }
+  }
+
+  public getCurrentDayOfWeekFromDate(date) {
+    let day = moment
+      .utc(date)
+      .day();
+
+    return WEEKDAYS[day - 1];
+  }
+
+  public viewEventToEvent(viewEvent: any, group: any, activeTimezone: number) {
+
+    let temperatureUnit: string = 'Fahrenheit';
+
+    let event: any = {
+      groupId: group.id,
+      type: viewEvent.type,
+      mode: viewEvent.mode,
+      setpoint: (temperatureUnit === 'Celsius') ?
+        this.toFahrenheit(parseFloat(viewEvent.setpoint)) : parseInt(viewEvent.setpoint, 10),
+      durationType: viewEvent.durationType
+    };
+
+    if (!event.id) {
+      let startOfDayWithOffset = moment
+        .utc()
+        .add(activeTimezone, "ms")
+        .startOf("day");
+      event.start = moment
+        .utc()
+        .add(activeTimezone, "ms")
+        .diff(startOfDayWithOffset, "seconds");
+    } else {
+      event.start = viewEvent.start;
+    }
+
+    if (viewEvent.durationType === "time") {
+      event.end =
+        event.start + parseInt(viewEvent.duration) * 3600;
+    } else {
+      event.end = this.getEndTimeForTemporaryOverrideEvent(event, group.events, activeTimezone);
+    }
+
+    return event;
   }
 }

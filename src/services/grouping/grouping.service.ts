@@ -40,6 +40,14 @@ export class GroupingService {
     return this.api.get(`${this.path}/${id}/devices/search?extraStatus=all`).map((res: any) => res);
   }
 
+  public getGroupEvents(id: string): Observable<any> {
+    return this.api.get(`${this.path}/${id}/events?ghost=true`).map((res: any) => res);
+  }
+
+  public getUnusedDevices(id: string): Observable<any> {
+    return this.api.get(`${this.path}/${id}/devices/unused`).map((res: any) => res);
+  }
+
   // public updateGroup(data: any): Observable<any> {
   //   const clinicData: any = _.pick(data, this.clinicAllowedFields);
   //   return this.api.post(`${this.path}/update`, clinicData);
@@ -47,6 +55,10 @@ export class GroupingService {
 
   public createGroup(data: any): Observable<any> {
     return this.api.post(`${this.path}`, { data });
+  }
+
+  public createEvent(data: any, groupId: string): Observable<any> {
+    return this.api.post(`${this.path}/${groupId}/event`, { data });
   }
 
   public updateGroup(group: any): Observable<any> {
@@ -75,6 +87,10 @@ export class GroupingService {
 
   public provision(id: string, data: any): Observable<any> {
     return this.api.post(`${this.path}/${id}/zengine/provision`, { data });
+  }
+
+  public assignDeviceToGroup(groupId: string, device: any): Observable<any> {
+    return this.api.post(`${this.path}/${groupId}/device/${device.deviceId}`, {});
   }
 
   public setConfiguration (data: any): Observable<any> {

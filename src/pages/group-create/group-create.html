@@ -2,6 +2,7 @@
   <ion-navbar class="custom-header">
     <ion-icon class="header-action-icon pull-left" name="arrow-back" tapable (click)="goToGrouping(activeGroup)"></ion-icon>
     <ion-title>ZEN HQ</ion-title>
+    <ion-spinner *ngIf="loading" class="spinner-right-absolute-head"></ion-spinner>
   </ion-navbar>
 </ion-header>
 <ion-content class="my-clinic-page group-create-page">
@@ -22,19 +23,37 @@
         [itemError]="_util.validateItem(field, newGroup[field.modelName])"
         (itemChange)="field.type === 'google-autocomplete' ? applyAddressTo(newGroup, $event) : newGroup[field.modelName] = $event; onChangeValidate()"
       ></input-select>
+
+      <custom-select
+        *ngIf="unusedDevices.length && activeGroup.level < 3"
+        [itemDisabled]="false"
+        [itemMultiple]="true"
+        [itemValue]="newGroup.hubs"
+        [itemLabel]="'Hubs'"
+        [itemOptions]="unusedDevices"
+        [itemType]="'text'"
+        [itemError]="''"
+        (itemChange)="newGroup.hubs = $event; onChangeValidate()"
+      ></custom-select>
+
+      <br/>
+      <h5 *ngIf="!unusedDevices.length && activeGroup.level <= 4" class="full-width-text-center">
+        No available {{ activeGroup.level === 4 ? 'Devices' : 'Hubs' }}
+      </h5>
+
     </div>
 
-    <!--<div class="content-actions">-->
-      <!--<button-->
-        <!--[disabled]="false"-->
-        <!--*ngIf="dependencies.edit && activeGroup.level === 3"-->
-        <!--type="button"-->
-        <!--class="btn-round float-left shadow"-->
-      <!--&gt;-->
-        <!--<ion-icon class="btn-ion-icon" name="add" tapable (click)="goToThermostat(activeGroup)"></ion-icon>-->
-        <!--<span class="btn-title-absolute">Add hub</span>-->
-      <!--</button>-->
-    <!--</div>-->
+    <div class="content-actions" *ngIf="activeGroup.level === 3">
+      <button
+        [disabled]="!unusedDevices.length"
+        *ngIf="dependencies.edit && activeGroup.level === 3"
+        type="button"
+        class="btn-round float-left shadow"
+      >
+        <ion-icon class="btn-ion-icon" name="add" tapable (click)="goToHub(activeGroup)"></ion-icon>
+        <span class="btn-title-absolute">Add hub</span>
+      </button>
+    </div>
 
     <div class="actions col-xs-12">
       <button

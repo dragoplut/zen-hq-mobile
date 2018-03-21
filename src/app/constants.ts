@@ -22,6 +22,44 @@ export const USER_ROLES = [
 
 export const APP_USER = 'app_user';
 
+export const TEMPERARURE_UNIT: any = {
+  C: 'Celsius',
+  F: 'Fahrenheit'
+};
+
+export const GROUP_LEVEL: any = {
+  ORGANIZATION: 1,
+  REGION: 2,
+  SITE: 3,
+  PLACE: 4
+};
+
+export const WEEKDAYS: string[] = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday"
+];
+
+export const EVENT_TYPE: any = {
+  LIGHTING: 'schedule-switch',
+  SCHEDULE: 'schedule',
+  HOLIDAY: 'holiday',
+  TEMPORARY_OVERRIDE: 'temporary-override',
+  DEMAND_RESPONSE: 'demand-response',
+  OPEN_DEMAND_RESPONSE: 'open-demand-response'
+};
+
+export const USER_ROLE: any = {
+  ADMIN: 'admin',
+  NATIONAL_MANAGER: 'national-manager',
+  REGIONAL_MANAGER: 'regional-manager',
+  SITE_MANAGER: 'site-manager'
+};
+
 export const TIMEZONES_LIST = [
   { value: -720, viewValue: "(GMT-12:00) International Date Line West" },
   { value: -660, viewValue: "(GMT-11:00) Midway Island, Samoa" },

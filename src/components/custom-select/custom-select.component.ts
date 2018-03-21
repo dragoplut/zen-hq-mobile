@@ -17,6 +17,7 @@ export class CustomSelectComponent {
   @Input() public itemValue: string = '';
   @Input() public itemType: string = '';
   @Input() public itemOptions: any[] = [];
+  @Input() public itemMultiple: boolean = true;
   @Input() public itemDisabled: boolean = true;
   @Output() public itemChange = new EventEmitter();
 

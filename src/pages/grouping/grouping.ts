@@ -16,6 +16,7 @@ import {
 })
 export class GroupingComponent {
 
+  public loading: boolean = false;
   public logoTransparent: string = ZENHQ_LOGO_TRANSPARENT;
   public modeImgChunk: string = MODE_IMG_CHUNK;
 
@@ -109,9 +110,11 @@ export class GroupingComponent {
   }
 
   public getGroup(id?: string) {
+    this.loading = true;
     this.dependencies.edit = false;
     this._grouping.getGroup(id).subscribe(
       (resp: any) => {
+        this.loading = false;
         console.log('resp: ', resp);
         this.activeGroup = resp.data;
         this.dependencies.activeGroup = _.clone(resp.data);
@@ -123,40 +126,47 @@ export class GroupingComponent {
         }
       },
       (err: any) => {
+        this.loading = false;
         console.log('err: ', err);
       }
     );
   }
 
   public getDevices(id?: string) {
+    this.loading = true;
     this.showList.groups = false;
     this.showList.devices = true;
     console.log('getDevices id', id);
     this._grouping.getGroupDevices(id).subscribe(
       (resp: any) => {
+        this.loading = false;
         console.log('resp: ', resp);
         // this.activeGroup = resp.data;
         this.groupDevicesList = resp.data;
         this.groupDevicesListFiltered = this.searchByString(this.searchInput, this.groupDevicesList);
       },
       (err: any) => {
+        this.loading = false;
         console.log('err: ', err);
       }
     );
   }
 
   public getGroupChildren(group?: any) {
+    this.loading = true;
     this.showList.groups = true;
     this.showList.devices = false;
     this.groupDevicesList = [];
     this.groupDevicesListFiltered = [];
     this._grouping.getGroupChildren(group ? group.id : '').subscribe(
       (resp: any) => {
+        this.loading = false;
         console.log('resp: ', resp);
         this.groupList = resp.data;
         this.groupListFiltered = this.searchByString(this.searchInput, this.groupList);
       },
       (err: any) => {
+        this.loading = false;
         console.log('err: ', err);
       }
     );

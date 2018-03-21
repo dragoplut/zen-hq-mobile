@@ -11,6 +11,7 @@ import { Hotspot } from '@ionic-native/hotspot';
 
 import { MomentModule } from 'angular2-moment';
 
+import { WheelSelector } from '@ionic-native/wheel-selector';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -24,6 +25,7 @@ import {
   SigninComponent,
   ThermostatComponent,
   OverrideComponent,
+  HubComponent,
   ForgottenPasswordComponent,
   GroupCreateComponent,
   GroupingComponent
@@ -62,6 +64,7 @@ export class RavenErrorHandler implements ErrorHandler {
     GroupCreateComponent,
     GroupingComponent,
     OverrideComponent,
+    HubComponent,
     SigninComponent,
     ThermostatComponent,
     MyApp
@@ -83,6 +86,7 @@ export class RavenErrorHandler implements ErrorHandler {
     GroupCreateComponent,
     GroupingComponent,
     OverrideComponent,
+    HubComponent,
     SigninComponent,
     ThermostatComponent,
     MyApp
@@ -92,6 +96,7 @@ export class RavenErrorHandler implements ErrorHandler {
     Hotspot,
     StatusBar,
     SplashScreen,
+    WheelSelector,
     ApiService,
     AuthService,
     AccountService,

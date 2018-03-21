@@ -2,9 +2,11 @@
   <ion-navbar class="custom-header">
     <ion-icon
       class="header-action-icon pull-left"
-      name="arrow-back" tapable (click)="step && step < 5 ? step = step - 1 : goToGroup(activeGroup)"
+      name="arrow-back"
+      tapable (click)="step && step < 5 ? step = step - 1 : goToGroup(activeGroup)"
     ></ion-icon>
     <ion-title>ZEN HQ</ion-title>
+    <ion-spinner *ngIf="loading" class="spinner-right-absolute-head"></ion-spinner>
   </ion-navbar>
 </ion-header>
 <ion-content class="my-clinic-page group-create-page">
@@ -17,7 +19,7 @@
     <div class="clear-container text-center" *ngIf="!step">
       <button
         *ngFor="let item of thermostatBtns"
-        [disabled]="item.type !== 'zenWifi'"
+        [disabled]="false"
         type="button"
         class="btn-rect shadow"
         tapable (click)="addThermostat(item.type)"
@@ -29,13 +31,33 @@
     <div class="clear-container text-center" *ngIf="step === 1">
       <custom-input
         *ngFor="let inputItem of provisionInputs"
-        [itemDisabled]="false"
+        [itemClass]="provisioning !== 'zenWifi' ? 'hidden' : ''"
+        [itemDisabled]="loading"
         [itemValue]="data.device[inputItem.modelName]"
         [itemLabel]="inputItem.placeholder"
         [itemType]="inputItem.type"
         [itemError]="inputItem.modelName === 'title' && data.device[inputItem.modelName] && data.device[inputItem.modelName].length > 10 ? 'Name is too long!' : ''"
         (itemChange)="data.device[inputItem.modelName] = $event"
       ></custom-input>
+
+      <custom-select
+        *ngIf="unusedDevices.length"
+        [itemClass]="provisioning !== 'zenZigbee' && provisioning !== 'loadController' ? 'hidden' : ''"
+        [itemDisabled]="false"
+        [itemMultiple]="false"
+        [itemValue]="data.hubMac"
+        [itemLabel]="'Hubs'"
+        [itemOptions]="unusedDevices"
+        [itemType]="'text'"
+        [itemError]="''"
+        (itemChange)="data.hubMac = $event"
+      ></custom-select>
+
+      <br/>
+      <h5 *ngIf="!unusedDevices.length && activeGroup.level && (provisioning === 'zenZigbee' || provisioning === 'loadController')" class="full-width-text-center">
+        No available Devices
+      </h5>
+
     </div>
 
     <div *ngIf="step === 2" class="clear-container text-center">
@@ -68,7 +90,7 @@
 
       <input-select
         *ngFor="let field of connectNetworkInputs"
-        [itemDisabled]="field.disabled"
+        [itemDisabled]="field.disabled || loading"
         [itemValue]="data.network[field.modelName]"
         [itemLabel]="field.placeholder"
         [itemType]="field.type"
@@ -92,13 +114,22 @@
 
     <div class="actions col-xs-12">
       <button
-        *ngIf="step === 1"
+        *ngIf="step === 1 && provisioning === 'zenWifi'"
         type="button"
         class="btn-rect shadow"
         tapable (click)="provision(data)"
-        [disabled]="!data.device.title || (data.device.title.length && data.device.title.length > 10)"
+        [disabled]="loading || !data.device.title || (data.device.title.length && data.device.title.length > 10)"
       >
         Provision
+      </button>
+      <button
+        *ngIf="step === 1 && provisioning && provisioning !== 'zenWifi'"
+        type="button"
+        class="btn-rect shadow"
+        tapable (click)="attachDevice(data.hubMac)"
+        [disabled]="loading || !data.hubMac"
+      >
+        Attach Device
       </button>
       <button
         *ngIf="false"
@@ -113,7 +144,7 @@
         type="button"
         class="btn-rect shadow"
         tapable (click)="connectThermostat(data)"
-        [disabled]="!data.network.ssid"
+        [disabled]="loading || !data.network.ssid"
       >
         Connect Thermostat
       </button>

@@ -17,6 +17,7 @@ import {
 })
 export class ThermostatComponent {
 
+  public loading: boolean = false;
   public logoTransparent: string = ZENHQ_LOGO_TRANSPARENT;
 
   public data: any = {
@@ -25,6 +26,7 @@ export class ThermostatComponent {
       title: '',
       location: ''
     },
+    deviceToAttach: '',
     network: {
       ssid: '',
       password: ''
@@ -37,6 +39,7 @@ export class ThermostatComponent {
   public newGroup: any = {};
   public hotspotList: any[] = [];
   public hotspotListZen: any[] = [];
+  public unusedDevices: any[] = [];
   public groupCreate: any = {
     formValid: false,
     title: 'Default Create Group title'
@@ -79,7 +82,7 @@ export class ThermostatComponent {
 
   public ionViewDidLoad() {
     this.dependencies = this.navParams.get('dependencies') || {};
-    if (_.hasIn(this.dependencies, 'activeGroup.id')) {
+    if (this.dependencies && this.dependencies.activeGroup && this.dependencies.activeGroup.id) {
       this.activeGroup = this.dependencies.activeGroup;
       this.getParentFor(this.dependencies.activeGroup);
     } else {
@@ -97,6 +100,9 @@ export class ThermostatComponent {
     console.log('addThermostat type: ', type);
     switch (type) {
       case 'zenZigbee':
+        this.provisioning = type;
+        this.step = 1;
+        this.getUnusedDevices(this.activeGroup.parentId);
         break;
       case 'zenWifi':
         this.provisioning = type;
@@ -104,6 +110,9 @@ export class ThermostatComponent {
         this.step = 1;
         break;
       case 'loadController':
+        this.provisioning = type;
+        this.step = 1;
+        this.getUnusedDevices(this.activeGroup.parentId);
         break;
       default:
         console.log('addThermostat type is unrecognized:', type);
@@ -116,13 +125,16 @@ export class ThermostatComponent {
    * @param data
    */
   public connectThermostat(data: any) {
+    this.loading = true;
     this._grouping.setConfiguration(data).subscribe(
       (resp: any) => {
+        this.loading = false;
         console.log('connectThermostat success resp: ', resp);
         this.step = 5;
       },
       (err: any) => {
-        alert(JSON.stringify(err, null, 2));
+        this.loading = false;
+        this.showError(err);
       }
     );
   }
@@ -131,8 +143,10 @@ export class ThermostatComponent {
    * Scan WiFi networks
    */
   public scanWifi(type?: string) {
+    this.loading = true;
     this._hotspot.scanNetworks(
       (resp: any) => {
+        this.loading = false;
         if (type === 'zen') {
           this.hotspotList = [];
           this.hotspotListZen = _.filter(resp, (item: any) => item.SSID.toLowerCase().indexOf('zen') !== -1);
@@ -149,6 +163,7 @@ export class ThermostatComponent {
         console.log('_hotspot.scanNetworks resp: ', JSON.stringify(resp, null, 2));
       },
       (err: any) => {
+        this.loading = false;
         console.log('_hotspot.scanNetworks err: ', JSON.stringify(err, null, 2));
       },
     );
@@ -165,15 +180,18 @@ export class ThermostatComponent {
         ssid: spot.SSID,
         password: ''
       };
+      this.loading = true;
       this._hotspot.connectToWifi(
         cred,
         (done: any) => {
+          this.loading = false;
           console.log('connectToWifi done: ', done);
           this.step = 4;
           this.retrieveNetworksAll();
         },
         (err: any) => {
-          alert(JSON.stringify(err, null, 2))
+          this.loading = false;
+          this.showError(err);
         }
       );
     }
@@ -185,9 +203,11 @@ export class ThermostatComponent {
   }
 
   public provision(data: any) {
+    this.loading = true;
     if (data && data.device && data.device.title) {
       this._grouping.provision(data.group.id, data.device).subscribe(
         (resp: any) => {
+          this.loading = false;
           if (resp && resp.data && resp.data.sasToken) {
             this.provisionDetails = resp.data;
 
@@ -205,7 +225,8 @@ export class ThermostatComponent {
           }
         },
         (err: any) => {
-          alert(JSON.stringify(err, null, 2));
+          this.loading = false;
+          this.showError(err);
         }
       );
     }
@@ -216,16 +237,67 @@ export class ThermostatComponent {
    * @param group
    */
   public getParentFor(group: any) {
+    this.loading = true;
     this._grouping.getGroup(group.parentId).subscribe(
       (resp: any) => {
+        this.loading = false;
         if (resp && resp.data) {
           this.data.group = resp.data;
         }
       },
       (err: any) => {
-        alert(JSON.stringify(err, null, 2));
+        this.loading = false;
+        this.showError(err);
       }
     );
+  }
+
+  public attachDevice(mac: any) {
+    const device: any = _.find(this.dependencies.unusedDevicesFull, { hubMacAddress: mac });
+    console.log('attachDevice device: ', device);
+    this.loading = true;
+    this._grouping.assignDeviceToGroup(this.activeGroup.id, device).subscribe(
+      (resp: any) => {
+        this.loading = false;
+        this.step = 5;
+      },
+      (err: any) => {
+        this.loading = false;
+        this.showError(err);
+      }
+    );
+  }
+
+  public getUnusedDevices(id: string) {
+    this.loading = true;
+    this._grouping.getUnusedDevices(id).subscribe(
+      (resp: any) => {
+        this.loading = false;
+        let deviceType: string = '';
+        switch (this.provisioning) {
+          case 'zenZigbee':
+            deviceType = 'zengine';
+            break;
+          case 'loadController':
+            deviceType = 'securifi';
+            break;
+          default:
+            break;
+        }
+        const unusedDevices: any[] = _.filter(resp.data, (d: any) => d.cloud === deviceType).map((item: any) => {
+          return {
+            value: item.hubMacAddress,
+            viewValue: item.title
+          };
+        });
+        this.dependencies.unusedDevicesFull = resp.data;
+        this.unusedDevices = _.uniqBy([...unusedDevices], 'value');
+      },
+      (err: any) => {
+        this.loading = false;
+        alert(JSON.stringify(err, null, 2));
+      }
+    )
   }
 
   public retrieveNetworksZen() {
@@ -354,6 +426,7 @@ export class ThermostatComponent {
         title: '',
         location: ''
       },
+      deviceToAttach: '',
       network: {
         ssid: '',
         password: ''
@@ -370,38 +443,54 @@ export class ThermostatComponent {
   //   this.showConfirm(options, 'delete', item);
   // }
 
-  // public showConfirm(options: any, action: string, item?: any) {
-  //   let alert: any = this.alertCtrl.create({
-  //     title: options.title,
-  //     message: options.message,
-  //     buttons: [
-  //       {
-  //         text: 'No',
-  //         role: 'cancel',
-  //         handler: () => {
-  //           console.log('Cancel clicked');
-  //         }
-  //       },
-  //       {
-  //         text: 'Yes',
-  //         handler: () => {
-  //           this.doConfirmed(action, item);
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   alert.present();
-  // }
+  public showError(err: any) {
+    if (err && err.status === 503) {
+      const dialogOptions: any = {
+        title: 'Error!',
+        message: 'Connection issue discovered. Please try again.'
+      };
+      this.showConfirm(dialogOptions);
+    } else {
+      alert(JSON.stringify(err, null, 2));
+    }
+  };
 
-  // public doConfirmed(action: string, item?: any) {
-  //   switch (action) {
-  //     case 'delete':
-  //       // this.removeItem(item);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
+  public showConfirm(options: any, action?: string, item?: any) {
+    let btnNo: any = {
+      text: 'No',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    };
+    let btnYes: any = {
+      text: 'Yes',
+      handler: () => {
+        this.doConfirmed(action, item);
+      }
+    };
+    let btnOk: any = {
+      text: 'Ok'
+    };
+    let buttons: any[] = options && options.type && options.type === 'confirm' ? [ btnNo, btnYes ] : [ btnOk ];
+    let alert: any = this.alertCtrl.create({
+      title: options.title,
+      message: options.message,
+      buttons
+    });
+    alert.present();
+  }
+
+  public doConfirmed(action: string, item?: any) {
+    switch (action) {
+      case 'delete':
+        console.log('doConfirmed action: ', action);
+        break;
+      default:
+        console.log('doConfirmed action: ', action);
+        break;
+    }
+  }
 
   /**
    * Validate form

@@ -35,3 +35,13 @@ export type T_BLE_NOTIFICATION_ACTIVE = {
   address: string,
   uuid: any
 };
+
+export type T_EVENT_TEMP_OVERRIDE = {
+  id?: any,
+  type: string,
+  mode: string,
+  setpoint: number,
+  durationType: string,
+  start?: any,
+  end?: any
+};

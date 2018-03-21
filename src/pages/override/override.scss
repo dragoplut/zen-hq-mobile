@@ -1,6 +1,6 @@
 @import '../../theme/variables';
 
-.my-clinic-page.group-create-page {
+.my-clinic-page.override-page {
   .actions {
     text-align: center;
   }
@@ -14,5 +14,63 @@
   }
   .custom-header .toolbar-content ion-title.title .toolbar-title {
     margin: 6px 0 0 !important
+  }
+
+  .content-one-third {
+    display: inline-block;
+    margin-top: 10vh;
+    padding: 0 15px;
+    position: relative;
+    text-align: center;
+    width: 40%;
+    height: auto;
+    min-height: 33vh;
+    vertical-align: top;
+    h3, h4 {
+      color: $col-neutral-text;
+      display: block;
+      position: relative;
+    }
+    h4 {
+      line-height: 50px;
+      margin: 34% auto 4% !important;
+    }
+    input-select {
+      display: block;
+      margin-top: 43%;
+      margin-bottom: 5%;
+      position: relative;
+      height: 50px;
+      min-height: 50px;
+    }
+    .event-setpoint {
+      color: $col-neutral-text;
+    }
+    .btn-dark-icon {
+      margin: 15px auto !important;
+    }
+    .btn-dark-icon:first-child {
+      margin-top: 30px !important;
+    }
+    .ion-item-content-icon {
+      border-radius: 50%;
+      display: block;
+      width: 40px;
+      max-width: 40px;
+      margin: 45px auto 20px;
+      padding: 0;
+    }
+    .custom-select-container ion-item.item.item-block.item-select ion-select.select {
+      text-align: center;
+      width: 85%;
+      .select-text {
+        color: $col-neutral-text;
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+  }
+  .content-one-third:nth-of-type(2) {
+    width: 18%;
   }
 }

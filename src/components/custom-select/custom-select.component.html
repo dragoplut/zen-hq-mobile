@@ -9,6 +9,7 @@
     <ion-select
       *ngIf="itemOptions && itemOptions[0] && !itemOptions[0].value"
       [disabled]="itemDisabled"
+      [multiple]="itemMultiple"
       [(ngModel)]="itemValue"
       (focus)="selectLabel.isActive=true"
       (blur)="selectLabel.isActive=false"
@@ -22,6 +23,7 @@
     <ion-select
       *ngIf="itemOptions && itemOptions[0] && itemOptions[0].value"
       [disabled]="itemDisabled"
+      [multiple]="itemMultiple"
       [(ngModel)]="itemValue"
       (focus)="selectLabel.isActive=true"
       (blur)="selectLabel.isActive=false"

@@ -4,7 +4,7 @@ import {AlertController, NavController, NavParams} from 'ionic-angular';
 import * as _ from 'lodash';
 
 import { T_INPUT_SELECT_PROPS } from '../../app/types';
-import { GroupingComponent, ThermostatComponent } from '../index';
+import { GroupingComponent, HubComponent } from '../index';
 import { GroupingService, UtilService } from '../../services/index';
 import {
   TIMEZONES_LIST,
@@ -18,9 +18,13 @@ import {
 export class GroupCreateComponent {
 
   public logoTransparent: string = ZENHQ_LOGO_TRANSPARENT;
+  public loading: boolean = false;
 
   public activeGroup: any = {};
-  public newGroup: any = {};
+  public newGroup: any = {
+    hubs: []
+  };
+  public unusedDevices: any[] = [];
   public groupCreate: any = {
     formValid: false,
     title: 'Default Create Group title'
@@ -47,7 +51,11 @@ export class GroupCreateComponent {
   public ionViewDidLoad() {
     this.dependencies = this.navParams.get('dependencies') || {};
     console.log('group-create ionViewDidLoad this.dependencies: ', this.dependencies);
-    if (_.hasIn(this.dependencies, 'activeGroup.id')) {
+    if (this.dependencies && this.dependencies.activeGroup && this.dependencies.activeGroup.id) {
+      this.activeGroup = this.dependencies.activeGroup;
+      if (this.activeGroup.level < 4) {
+        this.getUnusedDevices(this.activeGroup.parentId);
+      }
       if (this.dependencies.edit) {
         this.prepareGroupCreation(this.dependencies.activeGroup);
       } else {
@@ -89,14 +97,42 @@ export class GroupCreateComponent {
     }
   }
 
+  public getUnusedDevices(id: string) {
+    this.loading = true;
+    this._grouping.getUnusedDevices(id).subscribe(
+      (resp: any) => {
+        console.log('getUnusedDevices resp: ', resp, ' this.newGroup.hubs: ', this.newGroup.hubs);
+        this.loading = false;
+        const unusedDevices: any[] = JSON.parse(JSON.stringify(resp.data.map((item: any) => {
+          return {
+            value: item.hubMacAddress,
+            viewValue: item.hubMacAddress
+          };
+        })));
+        const usedDevices: any[] = this.newGroup.hubs.map((item: any) => {
+          return {
+            value: item,
+            viewValue: item
+          };
+        });
+        this.dependencies.unusedDevicesFull = resp.data;
+        this.unusedDevices = _.uniqBy([...unusedDevices, ...usedDevices], 'value');
+      },
+      (err: any) => {
+        this.loading = false;
+        alert(JSON.stringify(err, null, 2));
+      }
+    )
+  }
+
   public goToGrouping(group: any) {
     this.dependencies.activeGroup = _.clone(group);
     this.openPage(GroupingComponent);
   }
 
-  public goToThermostat(group: any) {
+  public goToHub(group: any) {
     this.dependencies.activeGroup = _.clone(group);
-    this.openPage(ThermostatComponent);
+    this.openPage(HubComponent);
   }
 
   public openPage(page: any) {
@@ -140,7 +176,7 @@ export class GroupCreateComponent {
     }
     this.newGroup.parentId = this.activeGroup.id;
     if (this.dependencies.edit) {
-      this.newGroup = _.clone(group);
+      this.newGroup = JSON.parse(JSON.stringify(group));
       if (this.newGroup && this.newGroup.location) {
         this.newGroup.address = this.newGroup.location.address;
       }
@@ -256,5 +292,9 @@ export class GroupCreateComponent {
     });
     this.groupCreate.formValid = isValid;
     console.log('onChangeValidate isValid: ', isValid, ' this.newGroup: ', this.newGroup);
+  }
+
+  public selectedMultiple(event: any) {
+    console.log('selectedMultiple: ', event);
   }
 }

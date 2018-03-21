@@ -1,0 +1,88 @@
+<ion-header class="my-clinic-page group-create-page">
+  <ion-navbar class="custom-header">
+    <ion-icon
+      class="header-action-icon pull-left"
+      name="arrow-back" tapable (click)="step && step < 5 ? step = step - 1 : goToGroup(activeGroup)"
+    ></ion-icon>
+    <ion-title>ZEN HQ</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="my-clinic-page group-create-page">
+  <div class="content-title">
+    <ion-title class="truncated">{{activeGroup.title}}</ion-title>
+  </div>
+  <div class="page-content">
+
+    <div class="clear-container text-center" *ngIf="!step">
+      <button
+        *ngFor="let item of hubBtns"
+        [disabled]="item.type !== 'securifi'"
+        type="button"
+        class="btn-rect shadow"
+        tapable (click)="addHub(item.type)"
+      >
+        {{item.title}}
+      </button>
+    </div>
+
+    <div class="clear-container text-center" *ngIf="step === 1">
+      <custom-input
+        *ngFor="let inputItem of rainforestInputs"
+        [itemClass]="attachHubType !== 'rainforest' ? 'hidden' : ''"
+        [itemDisabled]="loading"
+        [itemValue]="data.device[inputItem.modelName]"
+        [itemLabel]="inputItem.placeholder"
+        [itemType]="inputItem.type"
+        [itemError]="inputItem.modelName === 'title' && data.device[inputItem.modelName] && data.device[inputItem.modelName].length > 10 ? 'Name is too long!' : ''"
+        (itemChange)="data.device[inputItem.modelName] = $event"
+      ></custom-input>
+
+      <custom-select
+        *ngIf="hubsList.length"
+        [itemClass]="attachHubType !== 'securifi' ? 'hidden' : ''"
+        [itemDisabled]="false"
+        [itemMultiple]="false"
+        [itemValue]="data.hubMac"
+        [itemLabel]="'Hubs'"
+        [itemOptions]="hubsList"
+        [itemType]="'text'"
+        [itemError]="''"
+        (itemChange)="data.hubMac = $event"
+      ></custom-select>
+
+    </div>
+
+    <div *ngIf="step === 2" class="create-account row center-xs middle-xs">
+      <div class="create-account-form col-xs-6">
+        <div class="info-container">
+          <div class="plain-text">
+            Device attached successfully
+          </div>
+          <ion-icon class="btn-ion-icon ion-icon-huge" name="checkmark-circle-outline" tapable (click)="goToGroup(activeGroup)"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions col-xs-12">
+      <button
+        *ngIf="step === 1"
+        type="button"
+        class="btn-rect shadow"
+        tapable (click)="attachHub(data.hubMac)"
+        [disabled]="loading || !data.hubMac"
+      >
+        Attach Hub
+        <ion-spinner *ngIf="loading" class="spinner-right-absolute"></ion-spinner>
+      </button>
+      <button
+        *ngIf="step === 2"
+        type="button"
+        class="btn-rect shadow"
+        tapable (click)="addAnother()"
+      >
+        Add Another
+      </button>
+
+    </div>
+  </div>
+</ion-content>
