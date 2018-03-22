@@ -54,8 +54,8 @@ export class OverrideComponent {
   };
 
   public timeDurationSelects: any[] = [
-    { modelName: 'duration', placeholder: 'Duration (hours)', type: 'select', required: false, options: this.options.durations },
-    { modelName: 'durationType', placeholder: 'Duration Type', type: 'select', required: false, options: this.options.durationTypeSelector }
+    { modelName: 'duration', placeholder: 'Duration (hours)', type: 'select', multiSelect: false, required: false, options: this.options.durations },
+    { modelName: 'durationType', placeholder: 'Duration Type', type: 'select', multiSelect: false, required: false, options: this.options.durationTypeSelector }
   ];
 
   constructor(

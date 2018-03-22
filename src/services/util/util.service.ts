@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import { EMAIL_REGEXP, EVENT_TYPE, WEEKDAYS } from '../../app/constants';
+import { EMAIL_REGEXP, EVENT_TYPE, WEEKDAYS, TEMPERATURE_UNIT } from '../../app/constants';
 import { T_LOCATION_PARAMS, T_INPUT_SELECT_PROPS } from '../../app/types';
 
 @Injectable()
@@ -198,13 +198,13 @@ export class UtilService {
 
   public viewEventToEvent(viewEvent: any, group: any, activeTimezone: number) {
 
-    let temperatureUnit: string = 'Fahrenheit';
+    let temperatureUnit: string = TEMPERATURE_UNIT.F;
 
     let event: any = {
       groupId: group.id,
       type: viewEvent.type,
       mode: viewEvent.mode,
-      setpoint: (temperatureUnit === 'Celsius') ?
+      setpoint: (temperatureUnit === TEMPERATURE_UNIT.C) ?
         this.toFahrenheit(parseFloat(viewEvent.setpoint)) : parseInt(viewEvent.setpoint, 10),
       durationType: viewEvent.durationType
     };

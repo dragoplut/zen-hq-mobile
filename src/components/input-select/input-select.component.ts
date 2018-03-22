@@ -18,6 +18,7 @@ export class InputSelectComponent {
   @Input() public itemType: string = '';
   @Input() public itemOptions: any[] = [];
   @Input() public itemDisabled: boolean = true;
+  @Input() public itemMultiple: boolean = false;
   @Output() public itemChange = new EventEmitter();
 
   public valueChange(value?: any) {

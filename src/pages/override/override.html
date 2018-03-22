@@ -52,6 +52,7 @@
           *ngFor="let field of timeDurationSelects"
           [itemDisabled]="field.disabled || (field.modelName === 'duration' && event.durationType !== 'time')"
           [itemValue]="event[field.modelName]"
+          [itemMulti]="field.placeholder"
           [itemLabel]="field.placeholder"
           [itemType]="field.type"
           [itemOptions]="field.options ? field.options : []"

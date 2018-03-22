@@ -333,6 +333,7 @@ forgotten-password .info-container, .override-page .info-container {
   }
 }
 .custom-input-label {
+  font-size: 1.4rem;
   z-index: -2 !important;
   opacity: .99 !important;
 }
@@ -633,7 +634,7 @@ forgotten-password .info-container, .override-page .info-container {
   margin-top: 10px;
   ion-item.item.item-block.item-select {
     padding-left: 0;
-    padding-top: 10px;
+    padding-top: 8px;
     background-color: transparent !important;
     z-index: 5;
     ion-select.select {

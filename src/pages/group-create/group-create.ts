@@ -53,14 +53,22 @@ export class GroupCreateComponent {
     console.log('group-create ionViewDidLoad this.dependencies: ', this.dependencies);
     if (this.dependencies && this.dependencies.activeGroup && this.dependencies.activeGroup.id) {
       this.activeGroup = this.dependencies.activeGroup;
-      if (this.activeGroup.level < 4) {
-        this.getUnusedDevices(this.activeGroup.parentId);
+      if (this.activeGroup.level <= 4) {
+        this.getUnusedDevices(
+          this.dependencies.edit ? this.activeGroup.parentId : this.activeGroup.id,
+          (resp: any) => {
+            this.prepareGroupCreation(this.dependencies.activeGroup);
+          },
+          (err: any) => {
+            console.log(JSON.stringify(err, null, 2))
+          }
+        );
       }
-      if (this.dependencies.edit) {
-        this.prepareGroupCreation(this.dependencies.activeGroup);
-      } else {
-        this.prepareGroupCreation(this.dependencies.activeGroup);
-      }
+      // if (this.dependencies.edit) {
+      //   this.prepareGroupCreation(this.dependencies.activeGroup);
+      // } else {
+      //   // this.prepareGroupCreation(this.dependencies.activeGroup);
+      // }
     } else {
       this.dependencies = {};
       this.openPage(GroupingComponent);
@@ -97,7 +105,7 @@ export class GroupCreateComponent {
     }
   }
 
-  public getUnusedDevices(id: string) {
+  public getUnusedDevices(id: string, callback?: any, reject?: any) {
     this.loading = true;
     this._grouping.getUnusedDevices(id).subscribe(
       (resp: any) => {
@@ -117,9 +125,15 @@ export class GroupCreateComponent {
         });
         this.dependencies.unusedDevicesFull = resp.data;
         this.unusedDevices = _.uniqBy([...unusedDevices, ...usedDevices], 'value');
+        if (callback) {
+          callback(resp);
+        }
       },
       (err: any) => {
         this.loading = false;
+        if (reject) {
+          reject(err);
+        }
         alert(JSON.stringify(err, null, 2));
       }
     )

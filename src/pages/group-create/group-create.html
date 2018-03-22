@@ -28,7 +28,7 @@
         *ngIf="unusedDevices.length && activeGroup.level < 3"
         [itemDisabled]="false"
         [itemMultiple]="true"
-        [itemValue]="newGroup.hubs"
+        [itemValue]="newGroup.hubs.length ? newGroup.hubs : ''"
         [itemLabel]="'Hubs'"
         [itemOptions]="unusedDevices"
         [itemType]="'text'"

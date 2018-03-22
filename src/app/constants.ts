@@ -1,5 +1,5 @@
 // TODO: Get app version value dynamically from config
-export const APP_VERSION: string = 'v1.0.5';
+export const APP_VERSION: string = 'v1.0.6';
 
 // tslint:disable-next-line
 export const EMAIL_REGEXP: any = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -22,7 +22,7 @@ export const USER_ROLES = [
 
 export const APP_USER = 'app_user';
 
-export const TEMPERARURE_UNIT: any = {
+export const TEMPERATURE_UNIT: any = {
   C: 'Celsius',
   F: 'Fahrenheit'
 };
