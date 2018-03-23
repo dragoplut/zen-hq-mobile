@@ -1,3 +1,4 @@
+<div *ngIf="loading" [hidden]="!loading" class="spinner-overlay"><ion-spinner class="spinner-center-absolute"></ion-spinner></div>
 <ion-header class="my-clinic-page">
   <ion-navbar class="custom-header">
     <ion-icon *ngIf="activeGroup && activeGroup.level" class="header-action-icon pull-left" name="arrow-back" tapable (click)="getPrevGroup(activeGroup)"></ion-icon>
@@ -10,7 +11,6 @@
       (ionCancel)="onCancel($event)">
     </ion-searchbar>
     <!--<ion-icon class="header-action-icon pull-right bold-ios" name="add" tapable (click)="doSomething()"></ion-icon>-->
-    <ion-spinner *ngIf="loading" class="spinner-right-absolute-head"></ion-spinner>
   </ion-navbar>
 </ion-header>
 <ion-content class="my-clinic-page">
@@ -23,7 +23,7 @@
       <ion-list>
         <ion-item-sliding *ngFor="let item of groupListFiltered">
           <ion-item>
-            <button [disabled]="loading" ion-item (click)="itemSelected(item)" class="truncated">
+            <button ion-item (click)="itemSelected(item)" class="truncated">
               {{ item.title }}
               <ion-icon class="list-icon-absolute" name="arrow-forward"></ion-icon>
             </button>
@@ -47,8 +47,8 @@
               <div class="ion-item-content-left">
                 <span class="ion-item-content-title truncated">{{ item.title }}</span>
                 <span class="ion-item-content-icons">
-                  <span *ngIf="item.type === 'Thermostat'">{{item.heatingSetpoint}} &deg;</span>
                   <span *ngIf="item.type === 'Thermostat'">{{item.localTemperature}} &deg;</span>
+                  <span *ngIf="item.type === 'Thermostat'">{{item.heatingSetpoint}} &deg;</span>
                   <img class="ion-item-content-icon" src="{{modeImgChunk + item.mode.toLowerCase()}}.svg" alt="{{item.mode}}">
                 </span>
               </div>

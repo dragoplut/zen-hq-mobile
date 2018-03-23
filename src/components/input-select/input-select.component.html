@@ -24,6 +24,7 @@
   [addressValue]="itemValue"
   (placeholder)="itemLabel"
   (callback)="valueChange($event[0]); itemValue = $event[0].formatted_address"
+  (callbackSearchVal)="valueChangeSearch($event[0])"
   (inputChanged)="itemValue = $event"
   key="AIzaSyDJYtcVzKXghryIDmQaTBDp5gWYPbTBqfU"
 ></google-places-autocomplete>

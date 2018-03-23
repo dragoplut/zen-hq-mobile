@@ -10,8 +10,9 @@ import {
   ZENHQ_LOGO_TRANSPARENT,
   EMAIL_REGEXP
 } from '../../app/constants';
+import { T_AUTH_2_FACT } from '../../app/types';
 import { GroupingComponent, ForgottenPasswordComponent } from '../index';
-import { MenuController, Nav, NavController } from 'ionic-angular';
+import { AlertController, MenuController, Nav, NavController } from 'ionic-angular';
 
 @Component({
   selector: 'signin',
@@ -38,7 +39,8 @@ export class SigninComponent implements OnInit {
     public _api: ApiService,
     public _auth: AuthService,
     public _account: AccountService,
-    public _permission: PermissionService
+    public _permission: PermissionService,
+    public alertCtrl: AlertController
   ) {
     this.menu.enable(false, 'appMenu');
   }
@@ -101,8 +103,10 @@ export class SigninComponent implements OnInit {
 
   public handleSuccess(resp: any) {
     this.loading = false;
-    if (resp) {
+    if (resp && resp.data && resp.data.id) {
       this.openPage(GroupingComponent);
+    } else if (resp && resp.data && resp.data.requiresShortcode) {
+      this.showShortCodePrompt(resp.data.message);
     } else {
       const message: string = 'You are not allowed to sign in!';
       this.showErrorMessage(message);
@@ -126,19 +130,49 @@ export class SigninComponent implements OnInit {
         (resp: any) => this.handleSuccess(resp),
         (err: any) => this.handleErr(err)
       );
-    // this._auth.generateToken(this.user)
-    //   .subscribe(
-    //     (resp: any) => this.getUserData(),
-    //     (err: any) => this.handleErr(err)
-    //   );
   }
 
-  // public getUserData() {
-  //   this._account.getAccountInfo().subscribe(
-  //     (resp: any) => this.handleSuccess(resp),
-  //     (err: any) => this.handleErr(err)
-  //   );
-  // }
+  public loginConfirm(cred: T_AUTH_2_FACT) {
+    this.loading = true;
+    localStorage.setItem('lastEmail', this.user.email);
+    this._auth.loginConfirm(cred)
+      .subscribe(
+        (resp: any) => this.handleSuccess(resp),
+        (err: any) => this.handleErr(err)
+      );
+  }
+
+  public showShortCodePrompt(title: string) {
+    let alert: any = this.alertCtrl.create({
+      title,
+      inputs: [
+        {
+          name: 'shortcode',
+          placeholder: 'Short code'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Ok',
+          handler: (data: any) => {
+            const cred: T_AUTH_2_FACT = {
+              email: this.user.email,
+              shortcode: data.shortcode
+            };
+            this.loginConfirm(cred);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
 
   public openPage(page) {
     this.navCtrl.push(page, { email: this.user.email });

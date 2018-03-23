@@ -72,6 +72,12 @@ ion-header.header-md::after {
     font-size: 18px;
   }
 }
+.content-title ion-title.truncated {
+  color: $primary-color;
+  .toolbar-title {
+    color: $primary-color;
+  }
+}
 ion-content {
   display: block;
   //padding: 0 16px !important;
@@ -93,6 +99,37 @@ ion-content {
 .spinner-right-absolute-head {
   right: 14px;
   top: 14px;
+}
+.spinner-overlay {
+  background-color: rgba($col-primary-white, .3);
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 98;
+}
+.spinner-center-absolute {
+  font-size: 34px;
+  position: absolute;
+  left: calc(50% - 20px);
+  top: calc(50% - 20px);
+  z-index: 99;
+  > svg {
+    height: 40px;
+    width: 40px;
+  }
+}
+.spinner-center-absolute.spinner-md-crescent circle {
+  stroke: $col-neutral-text !important;
+  stroke-width: 5px;
+}
+.signin-page {
+  .spinner-center-absolute.spinner-md-crescent circle {
+    stroke: $col-primary-white !important;
+  }
 }
 .ion-page > ion-content {
   position: relative !important;
@@ -293,7 +330,7 @@ forgotten-password .info-container, .override-page .info-container {
 .actions {
   margin-top: 20px;
   text-align: center;
-  z-index: 10;
+  //z-index: 10;
 }
 .additional-content-block {
   margin-top: -40px;

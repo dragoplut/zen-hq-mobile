@@ -153,12 +153,12 @@ export class ThermostatComponent {
         } else {
           this.hotspotListZen = [];
           this.hotspotList = resp;
-          this.connectNetworkInputs[0].options = resp.map((item: any) => {
+          this.connectNetworkInputs[0].options = _.uniqBy(resp.map((item: any) => {
             return {
               value: item.SSID,
               viewValue: item.SSID
             };
-          });
+          }), 'value');
         }
         console.log('_hotspot.scanNetworks resp: ', JSON.stringify(resp, null, 2));
       },
@@ -315,14 +315,6 @@ export class ThermostatComponent {
 
   public retrieveNetworksAll() {
     this.scanWifi();
-
-    let scanWifiInterval: any = setInterval(() => {
-      if (this.step === 4) {
-        this.scanWifi();
-      } else {
-        clearInterval(scanWifiInterval);
-      }
-    }, 5000);
   }
 
   public goToGroup(group: any) {

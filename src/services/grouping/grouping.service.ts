@@ -27,7 +27,7 @@ export class GroupingService {
   public getGroup(id?: string): Observable<any> {
     const userString: string = localStorage.getItem(APP_USER);
     const user: any = userString && userString.length ? JSON.parse(atob(userString)) : {};
-    return this.api.get(`${this.path}/${id || user.group}`).map((res: any) => res);
+    return this.api.get(`${this.path}/${id || user.group}?parents=true`).map((res: any) => res);
   }
 
   public getGroupChildren(id?: string): Observable<any> {
@@ -69,16 +69,6 @@ export class GroupingService {
       'hubs'
     ]);
     return this.api.put(`${this.path}/${group.id}`, { data });
-  }
-
-  public getGroups(): Observable<any> {
-    return this.api.get(`${this.path}/clinics`)
-      .map((res: any) => res);
-  }
-
-  public getGroupsSearch(search: string): Observable<any> {
-    return this.api.get(`${this.path}/clinicsSearch?search=${search}`)
-      .map((res: any) => res);
   }
 
   public deleteGroup(id: string | number): Observable<any> {

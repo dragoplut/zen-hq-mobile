@@ -69,7 +69,7 @@ export class HubComponent {
 
   public ionViewDidLoad() {
     this.dependencies = this.navParams.get('dependencies') || {};
-    if (_.hasIn(this.dependencies, 'activeGroup.id')) {
+    if (this.dependencies && this.dependencies.activeGroup && this.dependencies.activeGroup.id) {
       this.activeGroup = this.dependencies.activeGroup;
       this.updateUnusedDevicesList();
       this.getParentFor(this.dependencies.activeGroup);

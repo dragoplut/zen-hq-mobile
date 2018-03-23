@@ -1,3 +1,4 @@
+<div *ngIf="loading" [hidden]="!loading" class="spinner-overlay"><ion-spinner class="spinner-center-absolute"></ion-spinner></div>
 <ion-header class="my-clinic-page group-create-page">
   <ion-navbar class="custom-header">
     <ion-icon
@@ -72,7 +73,6 @@
         [disabled]="loading || !data.hubMac"
       >
         Attach Hub
-        <ion-spinner *ngIf="loading" class="spinner-right-absolute"></ion-spinner>
       </button>
       <button
         *ngIf="step === 2"

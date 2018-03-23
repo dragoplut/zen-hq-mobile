@@ -11,6 +11,8 @@ const GOOGLE_API_URL = "https://maps.googleapis.com/maps/api/place/";
 })
 export class GooglePlacesAutocompleteComponent {
 
+  @Output("callbackSearchVal") callbackSearchVal : EventEmitter<any> = new EventEmitter();
+
   @Output("callback") callback : EventEmitter<any> = new EventEmitter();
 
   @Output("inputChanged") inputChanged : EventEmitter<any> = new EventEmitter();
@@ -65,7 +67,8 @@ export class GooglePlacesAutocompleteComponent {
 
   public getLocals(ev: any) {
     let val = ev.target.value;
-    if (val && val.trim().length > 3) {
+    this.callbackSearchVal.emit(val);
+    if (val && val.trim().length > 0) {
       this.autocomplete(val)
         .subscribe(res => {
           this.locals = res.predictions;

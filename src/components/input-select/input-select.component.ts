@@ -20,8 +20,13 @@ export class InputSelectComponent {
   @Input() public itemDisabled: boolean = true;
   @Input() public itemMultiple: boolean = false;
   @Output() public itemChange = new EventEmitter();
+  @Output() public itemChangeSearch = new EventEmitter();
 
   public valueChange(value?: any) {
     this.itemChange.next(value || this.itemValue);
+  }
+
+  public valueChangeSearch(value?: any) {
+    this.itemChangeSearch.next(value);
   }
 }

@@ -1,8 +1,8 @@
+<div *ngIf="loading" [hidden]="!loading" class="spinner-overlay"><ion-spinner class="spinner-center-absolute"></ion-spinner></div>
 <ion-header class="my-clinic-page group-create-page">
   <ion-navbar class="custom-header">
     <ion-icon class="header-action-icon pull-left" name="arrow-back" tapable (click)="goToGrouping(activeGroup)"></ion-icon>
     <ion-title>ZEN HQ</ion-title>
-    <ion-spinner *ngIf="loading" class="spinner-right-absolute-head"></ion-spinner>
   </ion-navbar>
 </ion-header>
 <ion-content class="my-clinic-page group-create-page">
@@ -22,10 +22,11 @@
         [itemOptions]="field.options ? field.options : []"
         [itemError]="_util.validateItem(field, newGroup[field.modelName])"
         (itemChange)="field.type === 'google-autocomplete' ? applyAddressTo(newGroup, $event) : newGroup[field.modelName] = $event; onChangeValidate()"
+        (itemChangeSearch)="field.type === 'google-autocomplete' ? applySearchTo(newGroup, $event) : false; onChangeValidate()"
       ></input-select>
 
       <custom-select
-        *ngIf="unusedDevices.length && activeGroup.level < 3"
+        *ngIf="unusedDevices.length && activeGroup.level < 4"
         [itemDisabled]="false"
         [itemMultiple]="true"
         [itemValue]="newGroup.hubs.length ? newGroup.hubs : ''"

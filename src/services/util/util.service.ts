@@ -38,28 +38,6 @@ export class UtilService {
   }
 
   /**
-   * Convert firmware hex string to buffer array
-   * @param {string} firmwareHex
-   * @returns {any[]}
-   */
-  public getFirmwareHexBuffer(firmwareHex: string) {
-    const firmwareHexStr: string = firmwareHex.replace(/[\s\n:]/g, '');
-    const buffer: any[] = [];
-    let bytesLength: number = 0;
-
-    for (let i = 0; i < firmwareHexStr.length; i += 36) {
-      const strChunk: string = firmwareHexStr.substr(i, 36);
-      const chunk: any = new Uint8Array(18);
-      for (let j = 0; j < strChunk.length; j += 1) {
-        chunk[j] = parseInt(strChunk.substr(j*2, 2), 16);
-      }
-      bytesLength += strChunk.length / 2;
-      buffer.push(chunk);
-    }
-    return { buffer, bytesLength };
-  }
-
-  /**
    * Validate
    * @param {T_INPUT_SELECT_PROPS} field
    * @param value
@@ -230,5 +208,18 @@ export class UtilService {
     }
 
     return event;
+  }
+
+  public getFilteredUnused(parent: any, children: any[]) {
+    console.log('getFilteredUnused parent: ', parent, ' children: ', children);
+    let childrenHubs: string[] = [];
+    _.forEach(children, (item: any) => {
+      if (item && item.hubs && item.hubs.length) {
+        childrenHubs = [...childrenHubs, ...item.hubs];
+      }
+    });
+    const unusedHubs: string[] = _.filter(parent.hubs, (hub: string) => childrenHubs.indexOf(hub) === -1);
+    console.log('getFilteredUnused unusedHubs: ', unusedHubs);
+    return unusedHubs;
   }
 }

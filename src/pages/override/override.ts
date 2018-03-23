@@ -48,7 +48,7 @@ export class OverrideComponent {
       min: 1
     },
     setpoint: {
-      max: 90,
+      max: 99,
       min: 40
     }
   };

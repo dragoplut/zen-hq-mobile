@@ -13,7 +13,7 @@
   debounce="700"
   placeholder=""
 ></ion-searchbar>
-<ion-list>
+<ion-list class="autocomplete-prediction-list">
   <ion-item
     *ngFor="let item of locals"
     (click)="detail(item)">{{item.description}}

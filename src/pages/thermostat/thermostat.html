@@ -1,3 +1,4 @@
+<div *ngIf="loading" [hidden]="!loading" class="spinner-overlay"><ion-spinner class="spinner-center-absolute"></ion-spinner></div>
 <ion-header class="my-clinic-page group-create-page">
   <ion-navbar class="custom-header">
     <ion-icon
@@ -6,7 +7,6 @@
       tapable (click)="step && step < 5 ? step = step - 1 : goToGroup(activeGroup)"
     ></ion-icon>
     <ion-title>ZEN HQ</ion-title>
-    <ion-spinner *ngIf="loading" class="spinner-right-absolute-head"></ion-spinner>
   </ion-navbar>
 </ion-header>
 <ion-content class="my-clinic-page group-create-page">

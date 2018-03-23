@@ -3,6 +3,7 @@ import { ApiService } from '../index';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { APP_USER } from '../../app/constants';
+import { T_AUTH_2_FACT, T_AUTH_CRED } from '../../app/types';
 // noinspection TypeScriptCheckImport
 import * as _ from 'lodash';
 
@@ -33,10 +34,23 @@ export class AuthService {
     return canActivate;
   }
 
-  public authenticate(credits: any): Observable<any> {
+  public authenticate(credits: T_AUTH_CRED): Observable<any> {
     return this.api.post(`/login`, credits)
       .map((res: any) => {
         console.log('authenticate res: ', res);
+        if (res && res.data) {
+          const userData: string = JSON.stringify(res.data);
+          localStorage.setItem(APP_USER, btoa(userData));
+          localStorage.setItem('token_mobile', res.data.token);
+        }
+        return res;
+      });
+  }
+
+  public loginConfirm(credits: T_AUTH_2_FACT): Observable<any> {
+    return this.api.post(`/login/confirm`, credits)
+      .map((res: any) => {
+        console.log('authenticate confirm res: ', res);
         const userData: string = JSON.stringify(res.data);
         localStorage.setItem(APP_USER, btoa(userData));
         localStorage.setItem('token_mobile', res.data.token);
@@ -44,8 +58,8 @@ export class AuthService {
       });
   }
 
-  public getRoles(): Observable<any> {
-    return this.api.get(`/user/getAllRoles`)
+  public getPing(): Observable<any> {
+    return this.api.get(`/ping`)
       .map((res: any) => res);
   }
 

@@ -45,3 +45,13 @@ export type T_EVENT_TEMP_OVERRIDE = {
   start?: any,
   end?: any
 };
+
+export type T_AUTH_2_FACT = {
+  email: string;
+  shortcode: string
+};
+
+export type T_AUTH_CRED = {
+  email: string;
+  password: string
+};

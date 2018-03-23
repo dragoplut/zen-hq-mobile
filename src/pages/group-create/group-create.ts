@@ -54,15 +54,29 @@ export class GroupCreateComponent {
     if (this.dependencies && this.dependencies.activeGroup && this.dependencies.activeGroup.id) {
       this.activeGroup = this.dependencies.activeGroup;
       if (this.activeGroup.level <= 4) {
-        this.getUnusedDevices(
-          this.dependencies.edit ? this.activeGroup.parentId : this.activeGroup.id,
-          (resp: any) => {
-            this.prepareGroupCreation(this.dependencies.activeGroup);
-          },
-          (err: any) => {
-            console.log(JSON.stringify(err, null, 2))
-          }
-        );
+        this.prepareGroupCreation(this.dependencies.activeGroup);
+        // if (this.dependencies.groupChildren) {
+        //   const usedAndUnusedHubs: string[] = this._util.getFilteredUnused(this.activeGroup, this.dependencies.groupChildren);
+        //   const usedDevices: any[] = usedAndUnusedHubs.map((item: any) => {
+        //     return {
+        //       value: item,
+        //       viewValue: item
+        //     };
+        //   });
+        //
+        //   this.unusedDevices = _.uniqBy(usedDevices, 'value');
+        //   this.prepareGroupCreation(this.dependencies.activeGroup);
+        //   console.log('this.unusedDevices: ', this.unusedDevices);
+        // }
+        // this.getUnusedDevices(
+        //   this.dependencies.edit ? this.activeGroup.parentId : this.activeGroup.id,
+        //   (resp: any) => {
+        //     this.prepareGroupCreation(this.dependencies.activeGroup);
+        //   },
+        //   (err: any) => {
+        //     console.log(JSON.stringify(err, null, 2))
+        //   }
+        // );
       }
       // if (this.dependencies.edit) {
       //   this.prepareGroupCreation(this.dependencies.activeGroup);
@@ -194,6 +208,45 @@ export class GroupCreateComponent {
       if (this.newGroup && this.newGroup.location) {
         this.newGroup.address = this.newGroup.location.address;
       }
+      if (group && group.parents && group.parents[0]) {
+        this.loading = true;
+        this._grouping.getGroupChildren(group ? group.parentId : '').subscribe(
+          (resp: any) => {
+            this.loading = false;
+            const parentGroupChildren = resp.data;
+            const unusedHubs: string[] = this._util.getFilteredUnused(group.parents[0], parentGroupChildren) || [];
+            console.log('----------------- unusedHubs: ', unusedHubs);
+            const unusedHubsObject: any[] = unusedHubs.map((item: any) => {
+              return {
+                value: item,
+                viewValue: item
+              };
+            });
+            const usedHubsObject: any[] = this.activeGroup.hubs ?
+              this.activeGroup.hubs.map((item: any) => {
+                return {
+                  value: item,
+                  viewValue: item
+                };
+              }) : [];
+            this.unusedDevices = _.uniqBy([...unusedHubsObject, ...usedHubsObject], 'value');
+            console.log('1 this.unusedDevices: ', this.unusedDevices);
+          },
+          (err: any) => {
+            this.loading = false;
+            console.log('err: ', err);
+          }
+        );
+      }
+
+    } else {
+      this.unusedDevices = this.dependencies.unusedHubs.map((item: any) => {
+        return {
+          value: item,
+          viewValue: item
+        };
+      });
+      console.log('2 this.unusedDevices: ', this.unusedDevices);
     }
     console.log('this.createGroupInputs: ', this.createGroupInputs);
   }
@@ -227,9 +280,23 @@ export class GroupCreateComponent {
         group.location.lat = prediction.geometry.location.lat;
         group.location.lng = prediction.geometry.location.lng;
       }
+    } else if (typeof prediction === 'string') {
+      this.newGroup.address = prediction;
+      if (!group.location) {
+        group.location = {};
+      }
+      group.location.address = prediction;
     }
     console.log('applyAddressTo DONE: ', this.newGroup);
     this.onChangeValidate();
+  }
+
+  public applySearchTo(group: any, searchVal: string) {
+    group.address = searchVal;
+    if (!group.location) {
+      group.location = {};
+    }
+    group.location.address = searchVal;
   }
 
   public createGroup(item: any) {
@@ -306,9 +373,5 @@ export class GroupCreateComponent {
     });
     this.groupCreate.formValid = isValid;
     console.log('onChangeValidate isValid: ', isValid, ' this.newGroup: ', this.newGroup);
-  }
-
-  public selectedMultiple(event: any) {
-    console.log('selectedMultiple: ', event);
   }
 }

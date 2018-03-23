@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import {AlertController, MenuController, NavController, NavParams} from 'ionic-angular';
+import { AlertController, MenuController, NavController, NavParams } from 'ionic-angular';
 // noinspection TypeScriptCheckImport
 import * as _ from 'lodash';
 
 import { GroupCreateComponent, OverrideComponent, ThermostatComponent } from '../index';
-import { GroupingService } from '../../services/index';
+import { GroupingService, UtilService } from '../../services/index';
 import {
   MODE_IMG_CHUNK,
   ZENHQ_LOGO_TRANSPARENT
@@ -37,6 +37,7 @@ export class GroupingComponent {
   constructor(
     public menu: MenuController,
     public _grouping: GroupingService,
+    public _util: UtilService,
     public alertCtrl: AlertController,
     public navCtrl: NavController,
     public navParams: NavParams
@@ -118,7 +119,7 @@ export class GroupingComponent {
         console.log('resp: ', resp);
         this.activeGroup = resp.data;
         this.dependencies.activeGroup = _.clone(resp.data);
-        if (this.activeGroup.level < 4) {
+        if (this.activeGroup.level <= 4) {
           this.getGroupChildren(this.activeGroup);
         } else {
           console.log('getDevices this.activeGroup: ', this.activeGroup);
@@ -161,9 +162,13 @@ export class GroupingComponent {
     this._grouping.getGroupChildren(group ? group.id : '').subscribe(
       (resp: any) => {
         this.loading = false;
-        console.log('resp: ', resp);
+        console.log('getGroupChildren resp: ', resp);
+        this.dependencies.groupChildren = resp.data;
         this.groupList = resp.data;
         this.groupListFiltered = this.searchByString(this.searchInput, this.groupList);
+        const unusedHubs: any[] = this._util.getFilteredUnused(this.activeGroup, this.groupList) || [];
+        this.dependencies.unusedHubs = unusedHubs;
+        console.log('unusedHubs: ', unusedHubs);
       },
       (err: any) => {
         this.loading = false;
@@ -185,18 +190,6 @@ export class GroupingComponent {
     //     alert(JSON.stringify(err));
     //   }
     // );
-  }
-
-  public getGroupsSearch(searchValue: string) {
-    this._grouping.getGroupsSearch(searchValue).subscribe(
-      (resp: any) => {
-        console.log('resp: ', resp);
-        this.groupListFiltered = resp;
-      },
-      (err: any) => {
-        console.log('err: ', err);
-      }
-    );
   }
 
   /** Search function **/
