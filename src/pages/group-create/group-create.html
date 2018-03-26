@@ -27,7 +27,7 @@
 
       <custom-select
         *ngIf="unusedDevices.length && activeGroup.level < 4"
-        [itemDisabled]="false"
+        [itemDisabled]="activeGroup.level === 3"
         [itemMultiple]="true"
         [itemValue]="newGroup.hubs.length ? newGroup.hubs : ''"
         [itemLabel]="'Hubs'"

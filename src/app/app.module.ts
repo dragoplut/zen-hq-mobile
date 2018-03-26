@@ -14,6 +14,7 @@ import { MomentModule } from 'angular2-moment';
 import { WheelSelector } from '@ionic-native/wheel-selector';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Toast } from '@ionic-native/toast';
 
 import {
   CustomSelectComponent,
@@ -96,6 +97,7 @@ export class RavenErrorHandler implements ErrorHandler {
     Hotspot,
     StatusBar,
     SplashScreen,
+    Toast,
     WheelSelector,
     ApiService,
     AuthService,

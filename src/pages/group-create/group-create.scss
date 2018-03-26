@@ -10,11 +10,7 @@
     top: 60px;
   }
   .page-content {
-    padding: 30px 0 0 !important;
-    min-height: calc(100vh - 110px);
-    .clear-container {
-      min-height: calc(100vh - 140px);
-    }
+    padding: 30px 0;
   }
   .custom-header .toolbar-content ion-title.title .toolbar-title {
     margin: 6px 0 0 !important

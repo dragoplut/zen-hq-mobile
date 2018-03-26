@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import { Toast } from '@ionic-native/toast';
 
 @Injectable()
 export class ApiService implements OnInit {
@@ -21,7 +22,8 @@ export class ApiService implements OnInit {
   protected endpoint: string = 'http://jonin-api-release.herokuapp.com/api/v1';
 
   constructor(
-    public http: Http
+    public http: Http,
+    public toast: Toast
   ) {}
 
   public ngOnInit() {
@@ -32,20 +34,22 @@ export class ApiService implements OnInit {
   }
 
   public get(path: string): Observable<any> {
+    this.ping().subscribe(() => {}, (err: any) => this.showToast('Warning! No internet connection!'));
     return this.http.get(`${this.endpoint}${path}`, this.getDefaultOptions())
       .map(this.checkForError)
       .catch((err: any) => Observable.throw(err))
       .map(this.getJson);
   }
 
-  public getByUrl(url: string): Observable<any> {
-    return this.http.get(`${url}`)
-      .map(this.checkForError)
-      .catch((err: any) => Observable.throw(err))
-      .map((resp: any) => resp);
-  }
+  // public getByUrl(url: string): Observable<any> {
+  //   return this.http.get(`${url}`)
+  //     .map(this.checkForError)
+  //     .catch((err: any) => Observable.throw(err))
+  //     .map((resp: any) => resp);
+  // }
 
   public post(path, body): Observable<any> {
+    this.ping().subscribe(() => {}, (err: any) => this.showToast('Warning! No internet connection!'));
     return this.http.post(
       `${this.endpoint}${path}`,
       JSON.stringify(body),
@@ -57,6 +61,7 @@ export class ApiService implements OnInit {
   }
 
   public put(path: string, body: any): Observable<any> {
+    this.ping().subscribe(() => {}, (err: any) => this.showToast('Warning! No internet connection!'));
     return this.http.put(
       `${this.endpoint}${path}`,
       JSON.stringify(body),
@@ -68,7 +73,18 @@ export class ApiService implements OnInit {
   }
 
   public delete(path: string): Observable<any> {
+    this.ping().subscribe(() => {}, (err: any) => this.showToast('Warning! No internet connection!'));
     return this.http.delete(`${this.endpoint}${path}`, this.getDefaultOptions())
+      .map(this.checkForError)
+      .catch((err: any) => Observable.throw(err))
+      .map(this.getJson);
+  }
+
+  public ping(): Observable<any> {
+    let endpoint: string = this.endpoint;
+    endpoint = endpoint.slice(0, endpoint.length - 7);
+    console.log('endpoint: ', endpoint);
+    return this.http.get(`${endpoint}/ping`, this.getDefaultOptions())
       .map(this.checkForError)
       .catch((err: any) => Observable.throw(err))
       .map(this.getJson);
@@ -110,6 +126,15 @@ export class ApiService implements OnInit {
     this.token = tokenEncrypted ? atob(tokenEncrypted) : '';
     this.setHeaders({ Authorization: `Bearer ${this.token}` });
   }
+
+  private showToast(message: string) {
+    this.toast.show(message, '5000', 'top').subscribe(
+      toast => {
+        console.log(toast);
+      }
+    );
+  }
+
 
   protected getDefaultOptions(): RequestOptions {
     const tokenEncrypted: any = localStorage.getItem('token_mobile');
