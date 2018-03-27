@@ -19,7 +19,10 @@ export class ApiService implements OnInit {
     'Content-type': 'application/json'
   });
   public token: string = '';
+  // Release environment:
   protected endpoint: string = 'http://jonin-api-release.herokuapp.com/api/v1';
+  // Production environment:
+  // protected endpoint: string = 'http://jonin-api-zenhq.herokuapp.com/api/v1';
 
   constructor(
     public http: Http,
