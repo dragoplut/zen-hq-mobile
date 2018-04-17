@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="1.0.8" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ionic.starter" version="1.0.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ZEN HQ Mobile</name>
     <description>ZEN HQ Mobile</description>
     <author email="alastin.t@gmail.com" href="https://hq.zenhq.com/">ZEN Team</author>
@@ -94,7 +94,6 @@
     <allow-navigation href="http://192.168.156.28:8100" />
     <allow-navigation href="http://192.168.156.28:8101" />
     <allow-navigation href="http://192.168.0.103:8100" />
-    <engine name="android" spec="^7.0.0" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.0" />
@@ -111,9 +110,10 @@
     <allow-navigation href="http://192.168.157.149:8100" />
     <allow-navigation href="http://172.18.0.1:8100" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
-    <engine name="ios" spec="~4.5.4" />
     <plugin name="cordova-plugin-hotspot" spec="^1.2.10" />
     <plugin name="cordova-wheel-selector-plugin" spec="^1.0.9" />
     <plugin name="cordova-plugin-x-toast" spec="^2.6.2" />
+    <engine name="android" spec="^7.0.0" />
+    <engine name="ios" spec="~4.5.4" />
     <engine name="browser" spec="~5.0.3" />
 </widget>

@@ -129,6 +129,11 @@ export class GroupingComponent {
       (err: any) => {
         this.loading = false;
         console.log('err: ', err);
+        const dialogOptions: any = {
+          title: 'Error!',
+          message: 'Group not found.'
+        };
+        this.showConfirm(dialogOptions, 'groupTop');
       }
     );
   }
@@ -233,25 +238,31 @@ export class GroupingComponent {
     this.showConfirm(options, 'delete', item);
   }
 
-  public showConfirm(options: any, action: string, item?: any) {
+  public showConfirm(options: any, action?: string, item?: any) {
+    let btnNo: any = {
+      text: 'No',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    };
+    let btnYes: any = {
+      text: 'Yes',
+      handler: () => {
+        this.doConfirmed(action, item);
+      }
+    };
+    let btnOk: any = {
+      text: 'Ok',
+      handler: () => {
+        this.doConfirmed(action, item);
+      }
+    };
+    let buttons: any[] = options && options.type && options.type === 'confirm' ? [ btnNo, btnYes ] : [ btnOk ];
     let alert: any = this.alertCtrl.create({
       title: options.title,
       message: options.message,
-      buttons: [
-        {
-          text: 'No',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            this.doConfirmed(action, item);
-          }
-        }
-      ]
+      buttons
     });
     alert.present();
   }
@@ -260,6 +271,9 @@ export class GroupingComponent {
     switch (action) {
       case 'delete':
         this.removeItem(item);
+        break;
+      case 'groupTop':
+        this.getGroup();
         break;
       default:
         break;

@@ -222,10 +222,13 @@ export class HubComponent {
         return {
           value: item.hubMacAddress,
           valueOriginal: item,
-          viewValue: item.hub
+          viewValue: this._util.displayHub(item.hub)
         };
       }), 'viewValue'), (item: any) => this.activeGroup.hubs.indexOf(item.value) === -1);
+    } else if (this.dependencies.unusedDevices && this.dependencies.unusedDevices.length) {
+      this.hubsList = this.dependencies.unusedDevices;
     }
+    console.log('updateUnusedDevicesList this.hubsListFull: ', this.hubsListFull, ' this.hubsList: ', this.hubsList);
   }
 
   public goToGroup(group: any) {

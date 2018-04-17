@@ -50,8 +50,9 @@
         *ngIf="dependencies.edit && activeGroup.level === 3"
         type="button"
         class="btn-round float-left shadow"
+        tapable (click)="goToHub(activeGroup)"
       >
-        <ion-icon class="btn-ion-icon" name="add" tapable (click)="goToHub(activeGroup)"></ion-icon>
+        <ion-icon class="btn-ion-icon" name="add"></ion-icon>
         <span class="btn-title-absolute">Add hub</span>
       </button>
     </div>

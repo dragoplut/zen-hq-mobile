@@ -54,8 +54,8 @@ export class UtilService {
       case 'text':
       case 'google-autocomplete':
         if (typeof value === 'string') {
-          if (value && value.length < 2) {
-            errMessage = `${field.placeholder} min length 2 characters!`;
+          if (value && value.length < 1) {
+            errMessage = `${field.placeholder} min length 1 character!`;
           }
           if (value && value.length > 50) {
             errMessage = `${field.placeholder} max length 50 characters!`;
@@ -221,5 +221,11 @@ export class UtilService {
     const unusedHubs: string[] = _.filter(parent.hubs, (hub: string) => childrenHubs.indexOf(hub) === -1);
     console.log('getFilteredUnused unusedHubs: ', unusedHubs);
     return unusedHubs;
+  }
+
+  public displayHub(hub: any) {
+    return (hub.toString().length === 15) ?
+      parseInt(hub, 10).toString(16).toUpperCase() :
+      hub;
   }
 }

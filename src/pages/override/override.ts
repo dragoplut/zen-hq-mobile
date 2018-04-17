@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
+import { AlertController, NavController, NavParams, Platform } from 'ionic-angular';
 import { WheelSelector } from '@ionic-native/wheel-selector';
 // noinspection TypeScriptCheckImport
 import * as _ from 'lodash';
 
 import { GroupingComponent } from '../index';
 import { GroupingService, UtilService } from '../../services/';
-import { MODE_IMG_CHUNK } from "../../app/constants";
+import {DEFAULT_ERROR_MESSAGE, MODE_IMG_CHUNK} from "../../app/constants";
 
 @Component({
   selector: 'override',
@@ -61,6 +61,7 @@ export class OverrideComponent {
   constructor(
     public _util: UtilService,
     public _grouping: GroupingService,
+    public alertCtrl: AlertController,
     public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
@@ -125,7 +126,14 @@ export class OverrideComponent {
       },
       (err: any) => {
         this.loading = false;
-        alert(JSON.stringify(err, null, 2));
+        // alert(JSON.stringify(err, null, 2));
+        const message = err && err._body ?
+          JSON.parse(err._body) : { error: { message: DEFAULT_ERROR_MESSAGE } };
+        const dialogOptions: any = {
+          title: 'Error!',
+          message: message.error.message
+        };
+        this.showConfirm(dialogOptions, 'back');
       }
     );
   }
@@ -172,6 +180,35 @@ export class OverrideComponent {
     });
   }
 
+  public showConfirm(options: any, action?: string, item?: any) {
+    let btnNo: any = {
+      text: 'No',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    };
+    let btnYes: any = {
+      text: 'Yes',
+      handler: () => {
+        this.doConfirmed(action, item);
+      }
+    };
+    let btnOk: any = {
+      text: 'Ok',
+      handler: () => {
+        this.doConfirmed(action, item);
+      }
+    };
+    let buttons: any[] = options && options.type && options.type === 'confirm' ? [ btnNo, btnYes ] : [ btnOk ];
+    let alert: any = this.alertCtrl.create({
+      title: options.title,
+      message: options.message,
+      buttons
+    });
+    alert.present();
+  }
+
   public generateSelectorItems() {
     for (let item of this.options.selectorItems) {
       if (this.options && this.options[item]) {
@@ -189,6 +226,16 @@ export class OverrideComponent {
       }
     }
     console.log('generateSelectorItems this.options: ', this.options);
+  }
+
+  public doConfirmed(action: string, item?: any) {
+    switch (action) {
+      case 'back':
+        this.goToGrouping(this.activeGroup);
+        break;
+      default:
+        break;
+    }
   }
 
   public toFirstUpper(text: string) {

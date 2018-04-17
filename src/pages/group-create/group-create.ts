@@ -106,7 +106,8 @@ export class GroupCreateComponent {
       );
     } else {
       console.log('create group: ', group);
-      this._grouping.createGroup(group).subscribe(
+      const newGroup: any = _.omit(group, ['address']);
+      this._grouping.createGroup(newGroup).subscribe(
         (resp: any) => {
           console.log('resp: ', resp);
           // this.activeGroup = resp.data;
@@ -128,13 +129,13 @@ export class GroupCreateComponent {
         const unusedDevices: any[] = JSON.parse(JSON.stringify(resp.data.map((item: any) => {
           return {
             value: item.hubMacAddress,
-            viewValue: item.hubMacAddress
+            viewValue: this._util.displayHub(item.hubMacAddress)
           };
         })));
         const usedDevices: any[] = this.newGroup.hubs.map((item: any) => {
           return {
             value: item,
-            viewValue: item
+            viewValue: this._util.displayHub(item)
           };
         });
         this.dependencies.unusedDevicesFull = resp.data;
@@ -219,17 +220,18 @@ export class GroupCreateComponent {
             const unusedHubsObject: any[] = unusedHubs.map((item: any) => {
               return {
                 value: item,
-                viewValue: item
+                viewValue: this._util.displayHub(item)
               };
             });
             const usedHubsObject: any[] = this.activeGroup.hubs ?
               this.activeGroup.hubs.map((item: any) => {
                 return {
                   value: item,
-                  viewValue: item
+                  viewValue: this._util.displayHub(item)
                 };
               }) : [];
             this.unusedDevices = _.uniqBy([...unusedHubsObject, ...usedHubsObject], 'value');
+            this.dependencies.unusedDevices = this.unusedDevices;
             console.log('1 this.unusedDevices: ', this.unusedDevices);
           },
           (err: any) => {
@@ -243,7 +245,7 @@ export class GroupCreateComponent {
       this.unusedDevices = this.dependencies.unusedHubs.map((item: any) => {
         return {
           value: item,
-          viewValue: item
+          viewValue: this._util.displayHub(item)
         };
       });
       console.log('2 this.unusedDevices: ', this.unusedDevices);
@@ -350,11 +352,14 @@ export class GroupCreateComponent {
   public onChangeValidate() {
     let isValid = true;
     if (this.activeGroup.level - (this.dependencies.edit ? 1 : 0) === 2) {
+      // isValid = this.newGroup
+      //   && this.newGroup.location
+      //   && this.newGroup.location.address
+      //   && this.newGroup.location.lat
+      //   && this.newGroup.location.lng
+      //   && typeof this.newGroup.utcOffset === 'number';
       isValid = this.newGroup
-        && this.newGroup.location
-        && this.newGroup.location.address
-        && this.newGroup.location.lat
-        && this.newGroup.location.lng
+        && this.newGroup.address
         && typeof this.newGroup.utcOffset === 'number';
     }
     _.forEach(this.createGroupInputs, (item: any) => {
